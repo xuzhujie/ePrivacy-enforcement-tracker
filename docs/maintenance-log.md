@@ -7,6 +7,7 @@
 - 新增意大利 Garante Privacy 对 Meta 的 €805m Article 122 终端相册访问处罚，补充移动 App / 设备信息覆盖。
 - 新增 `amountAllocation`、来源官方域名校验、CSV 字段和来源巡检脚本。
 - 将 4 个已失效的 CNIL PDF 地址切换为对应的 Légifrance 决定页；首次 live source check 共 28 个来源，17 个可达、11 个被官方站点以 403 保护、0 个确认失效。
+- 首次 GitHub Actions 运行暴露 Node 22 不支持 `--test tests` 目录导入，已改为显式 `tests/*.test.ts`，避免本地 Node 26 与 CI 行为分叉。
 - App SDK 仍不做推测性标注；待官方决定明确指明 SDK 后再新增该主题案件。
 
 ## 维护规则

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --configLoader runner",
-    "test": "node --import tsx/esm --test tests",
+    "test": "node --import tsx/esm --test tests/*.test.ts",
     "data:check": "node --import tsx/esm scripts/validate-data.ts",
     "sources:check": "node --import tsx/esm scripts/check-sources.ts",
     "build": "tsc -b && vite build --configLoader runner",
