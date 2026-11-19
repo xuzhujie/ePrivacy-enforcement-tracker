@@ -1,0 +1,52 @@
+# ePrivacy｜独立执法 Tracker
+
+一个按实际法律依据登记 ePrivacy 执法的双语看板，覆盖：
+
+- Cookie 与其他终端追踪器
+- 移动 App 读取设备信息与终端标识符
+- App SDK（仅在官方文本明确提及 SDK 时标记）
+- 电子邮件、短信等电子营销
+
+案件可以与 GDPR 数据底座共用，但只有明确基于 ePrivacy 转化规则的部分才进入 ePrivacy 总额。混合 GDPR / ePrivacy 决定保留完整决定金额，并通过 `amountAllocation` 区分已拆分、合计、未解决和不适用。
+
+## 本地运行
+
+```bash
+npm install
+npm run dev
+```
+
+质量门：
+
+```bash
+npm run data:check
+npm test
+npm run lint
+npm run build
+```
+
+官方来源巡检：
+
+```bash
+npm run sources:check -- --output source-status.json
+```
+
+来源巡检只报告 URL 可达性，不会自动把复核案件升级为已核验；金额归属和法律依据仍需人工阅读官方原文。
+
+## 数据与维护
+
+- 主数据：[`src/data/cases.ts`](src/data/cases.ts)
+- 数据校验：[`src/data/dataQuality.ts`](src/data/dataQuality.ts)
+- 维护约定：[`docs/data-maintenance.md`](docs/data-maintenance.md)
+- 维护日志：[`docs/maintenance-log.md`](docs/maintenance-log.md)
+- 来源巡检：[`scripts/check-sources.ts`](scripts/check-sources.ts)
+
+当前数据截至 `2026-11-20`。App SDK 专项仍保持为明确空白：官方没有明确写出 SDK 时，不把普通移动 App API 或终端访问推断为 SDK。
+
+## CI / GitHub Pages
+
+每次 Pull Request 和 `main` 分支 push 会执行数据校验、测试、lint 和构建；`main` 通过质量门后由 [`quality-and-pages.yml`](.github/workflows/quality-and-pages.yml) 发布 GitHub Pages。每周来源巡检由 [`source-monitor.yml`](.github/workflows/source-monitor.yml) 执行，并保留 JSON 报告为 Actions artifact。
+
+首次发布前，在仓库 Settings → Pages 中选择 **GitHub Actions** 作为来源。默认 Pages 地址为：
+
+`https://xuzhujie.github.io/ePrivacy-enforcement-tracker/`

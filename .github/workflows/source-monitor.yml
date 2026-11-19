@@ -1,0 +1,35 @@
+name: source-monitor
+
+on:
+  schedule:
+    - cron: '30 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-official-sources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install
+      - name: Check official source URLs
+        id: source_check
+        continue-on-error: true
+        run: npm run sources:check -- --output source-status.json
+      - name: Upload source status report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-status
+          path: source-status.json
+      - name: Fail when a source is unreachable
+        if: steps.source_check.outcome == 'failure'
+        run: exit 1
