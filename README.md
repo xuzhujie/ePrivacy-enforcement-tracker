@@ -12,7 +12,7 @@
 ## 本地运行
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -33,6 +33,8 @@ npm run sources:check -- --output source-status.json
 
 来源巡检只报告 URL 可达性，不会自动把复核案件升级为已核验；金额归属和法律依据仍需人工阅读官方原文。
 
+看板会把人工证据状态与自动 URL 可达性分开显示。`403` 只表示自动检查需要复核，不等于官方决定失效或案件证据被排除。
+
 ## 数据与维护
 
 - 主数据：[`src/data/cases.ts`](src/data/cases.ts)
@@ -41,11 +43,13 @@ npm run sources:check -- --output source-status.json
 - 维护日志：[`docs/maintenance-log.md`](docs/maintenance-log.md)
 - 来源巡检：[`scripts/check-sources.ts`](scripts/check-sources.ts)
 
-当前数据截至 `2026-11-20`。App SDK 专项仍保持为明确空白：官方没有明确写出 SDK 时，不把普通移动 App API 或终端访问推断为 SDK。
+当前数据截至 `2026-11-20`。App SDK 现在包含一条官方明确提及 SDK 的 GDPR-only 参考记录，但该记录不计入 ePrivacy 处罚总额；没有官方明确文字时，仍不把普通移动 App API 或终端访问推断为 SDK。
 
 ## CI / GitHub Pages
 
 每次 Pull Request 和 `main` 分支 push 会执行数据校验、测试、lint 和构建；`main` 通过质量门后由 [`quality-and-pages.yml`](.github/workflows/quality-and-pages.yml) 发布 GitHub Pages。每周来源巡检由 [`source-monitor.yml`](.github/workflows/source-monitor.yml) 执行，并保留 JSON 报告为 Actions artifact。
+
+依赖安装使用已提交的 `package-lock.json` 与 `npm ci`。来源巡检会更新 `public/source-status.json`，下一次 Pages 发布会把最近巡检摘要带到看板中。
 
 首次发布前，在仓库 Settings → Pages 中选择 **GitHub Actions** 作为来源。默认 Pages 地址为：
 

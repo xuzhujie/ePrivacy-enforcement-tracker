@@ -59,6 +59,13 @@ export function validateCaseDataset(items: EnforcementCase[]): DataQualityReport
       if (!item.legalBases.some((legalBasis) => legalBasis.family === 'eprivacy')) issues.push({ severity: 'error', caseId: item.id, field: 'legalBases', message: 'Included cases need an ePrivacy legal basis.' })
     }
 
+    if (item.gdprTreatment === 'included' && item.trackerTreatment !== 'excluded') {
+      issues.push({ severity: 'error', caseId: item.id, field: 'trackerTreatment', message: 'GDPR-only records must be explicitly excluded from the ePrivacy tracker treatment.' })
+    }
+    if (item.gdprTreatment === 'included' && item.fineEur != null) {
+      issues.push({ severity: 'error', caseId: item.id, field: 'fineEur', message: 'GDPR-only records cannot provide an ePrivacy-counted fine.' })
+    }
+
     if (item.gdprTreatment === 'mixed_needs_review' && item.amountAllocation === 'exact' && item.fineEur == null) {
       issues.push({ severity: 'error', caseId: item.id, field: 'fineEur', message: 'An exact mixed-basis allocation must provide the ePrivacy amount.' })
     }

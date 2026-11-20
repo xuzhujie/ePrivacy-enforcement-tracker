@@ -23,8 +23,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Validate official-source data
         run: npm run data:check
       - name: Run tests
@@ -52,8 +53,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+      - name: Refresh source reachability snapshot
+        continue-on-error: true
+        run: npm run sources:check -- --output public/source-status.json
       - name: Build static site
         run: npm run build
       - name: Configure GitHub Pages

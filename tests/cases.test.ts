@@ -5,6 +5,7 @@ import { cases } from '../src/data/cases.ts'
 const google = cases.find((item) => item.id === 'EP-2025-001')
 const shein = cases.find((item) => item.id === 'EP-2025-002')
 const meta = cases.find((item) => item.id === 'EP-2026-003')
+const foodinho = cases.find((item) => item.id === 'EP-2024-006')
 
 test('seeds the two official CNIL enforcement records', () => {
   assert.ok(cases.length >= 15)
@@ -32,6 +33,18 @@ test('adds the official Italian terminal-access enforcement record', () => {
   assert.equal(meta.decisionReference, 'Provvedimento 10321455')
   assert.ok(meta.sources.some((source) => source.url.includes('/10321455')))
   assert.equal(meta.topics.includes('app_sdk'), false)
+})
+
+test('tracks the official SDK record as GDPR-only and excludes it from the ePrivacy total', () => {
+  assert.ok(foodinho)
+  assert.deepEqual(foodinho.topics, ['app_sdk', 'device_identifiers'])
+  assert.equal(foodinho.surface, 'mobile_app')
+  assert.equal(foodinho.gdprTreatment, 'included')
+  assert.equal(foodinho.trackerTreatment, 'excluded')
+  assert.equal(foodinho.fineEur, null)
+  assert.equal(foodinho.totalDecisionAmountEur, 5_000_000)
+  assert.equal(foodinho.amountAllocation, 'not_applicable')
+  assert.ok(foodinho.sources.some((source) => source.url.includes('10074601')))
 })
 
 test('keeps the Google amount combined across its two legal bases', () => {

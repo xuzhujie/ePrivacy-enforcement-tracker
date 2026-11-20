@@ -1,4 +1,4 @@
-import { type EnforcementCase, type EnforcementTopic, type CaseOutcome, type LocalizedText, type EvidenceStatus, type TrackerTreatment, type EvidenceLevel } from './cases.ts'
+import { type EnforcementCase, type EnforcementTopic, type CaseOutcome, type LocalizedText, type EvidenceStatus, type TrackerTreatment, type EvidenceLevel, type SourceVerificationStatus } from './cases.ts'
 
 export interface FineByYear {
   year: string
@@ -38,6 +38,7 @@ export interface DashboardMetrics {
   eprivacyCaseCount: number
   reviewCaseCount: number
   sourceCount: number
+  sourceEvidenceStatusCounts: Record<SourceVerificationStatus, number>
   topicCounts: Record<EnforcementTopic, number>
   allTopicCounts: Record<EnforcementTopic, number>
   legalBasisCounts: Record<string, number>
@@ -53,6 +54,7 @@ const TOPICS: EnforcementTopic[] = ['cookies', 'app_sdk', 'device_identifiers', 
 const OUTCOMES: CaseOutcome[] = ['fine', 'injunction', 'closed', 'proceeding', 'prosecution']
 const EVIDENCE_STATUSES: EvidenceStatus[] = ['verified', 'needs_review', 'excluded']
 const TRACKER_TREATMENTS: TrackerTreatment[] = ['included', 'needs_review', 'excluded']
+const SOURCE_EVIDENCE_STATUSES: SourceVerificationStatus[] = ['verified', 'needs_review']
 
 function isCountedCase(item: EnforcementCase): boolean {
   return item.trackerTreatment === 'included'
@@ -133,10 +135,14 @@ export function getDashboardMetrics(items: EnforcementCase[]): DashboardMetrics 
   const outcomeCounts = Object.fromEntries(OUTCOMES.map((outcome) => [outcome, 0])) as Record<CaseOutcome, number>
   const evidenceStatusCounts = Object.fromEntries(EVIDENCE_STATUSES.map((status) => [status, 0])) as Record<EvidenceStatus, number>
   const trackerTreatmentCounts = Object.fromEntries(TRACKER_TREATMENTS.map((treatment) => [treatment, 0])) as Record<TrackerTreatment, number>
+  const sourceRegistry = getSourceRegistry(items)
+  const sourceEvidenceStatusCounts = Object.fromEntries(SOURCE_EVIDENCE_STATUSES.map((status) => [status, 0])) as Record<SourceVerificationStatus, number>
   const finesByYearMap = new Map<string, number>()
   let eprivacyFineTotal = 0
   let eprivacyCaseCount = 0
   let reviewCaseCount = 0
+
+  for (const source of sourceRegistry) sourceEvidenceStatusCounts[source.verificationStatus] += 1
 
   for (const item of items) {
     for (const topic of item.topics) allTopicCounts[topic] += 1
@@ -175,7 +181,8 @@ export function getDashboardMetrics(items: EnforcementCase[]): DashboardMetrics 
     eprivacyFineTotal,
     eprivacyCaseCount,
     reviewCaseCount,
-    sourceCount: getSourceRegistry(items).length,
+    sourceCount: sourceRegistry.length,
+    sourceEvidenceStatusCounts,
     topicCounts,
     allTopicCounts,
     legalBasisCounts,

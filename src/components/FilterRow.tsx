@@ -3,11 +3,12 @@ import { EVIDENCE_STATUS_META, OUTCOME_META, SURFACE_META, type CaseOutcome, typ
 import type { Language } from '../lib/i18n.ts'
 import { copy } from '../lib/copy.ts'
 import type { CaseFilters } from '../lib/filterCases.ts'
+import type { LocalizedFilterOption } from '../lib/filterOptions.ts'
 
 interface FilterRowProps {
   filters: CaseFilters
-  authorities: string[]
-  countries: string[]
+  authorities: LocalizedFilterOption[]
+  countries: LocalizedFilterOption[]
   years: string[]
   surfaces: EnforcementSurface[]
   legalBases: LegalBasis[]
@@ -27,14 +28,14 @@ export function FilterRow({ filters, authorities, countries, years, surfaces, le
         <span className="sr-only">{copy(language, 'authority')}</span>
         <select value={filters.authority} onChange={(event) => onChange({ authority: event.target.value })}>
           <option value="all">{copy(language, 'allAuthorities')}</option>
-          {authorities.map((authority) => <option value={authority} key={authority}>{authority}</option>)}
+          {authorities.map((authority) => <option value={authority.value} key={authority.value}>{authority.label[language]}</option>)}
         </select>
       </label>
       <label className="filter-select-wrap">
         <span className="sr-only">{copy(language, 'country')}</span>
         <select value={filters.country} onChange={(event) => onChange({ country: event.target.value })}>
           <option value="all">{copy(language, 'allCountries')}</option>
-          {countries.map((country) => <option value={country} key={country}>{country}</option>)}
+          {countries.map((country) => <option value={country.value} key={country.value}>{country.label[language]}</option>)}
         </select>
       </label>
       <label className="filter-select-wrap">

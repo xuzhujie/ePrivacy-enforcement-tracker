@@ -1,4 +1,5 @@
 import { CheckCircle2, ExternalLink, FileText, X } from 'lucide-react'
+import { useEffect, useRef } from 'react'
 import { EVIDENCE_LEVEL_META, EVIDENCE_STATUS_META, SURFACE_META, type EnforcementCase } from '../data/cases.ts'
 import type { Language } from '../lib/i18n.ts'
 import { formatDate, formatFine } from '../lib/i18n.ts'
@@ -10,17 +11,38 @@ interface EvidenceDrawerProps {
   onClose: () => void
 }
 
+interface EvidenceDrawerContentProps {
+  caseItem: EnforcementCase
+  language: Language
+  onClose: () => void
+}
+
 export function EvidenceDrawer({ caseItem, language, onClose }: EvidenceDrawerProps) {
   if (!caseItem) return null
+  return <EvidenceDrawerContent caseItem={caseItem} language={language} onClose={onClose} />
+}
+
+function EvidenceDrawerContent({ caseItem, language, onClose }: EvidenceDrawerContentProps) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
   const latestEvent = caseItem.events[caseItem.events.length - 1]
   const isExcluded = caseItem.gdprTreatment === 'excluded'
+  const isGdprOnly = caseItem.gdprTreatment === 'included'
   const isEprivacyAllocationIncluded = caseItem.trackerTreatment === 'included' && caseItem.evidenceStatus === 'verified' && caseItem.fineEur != null
 
+  useEffect(() => {
+    closeButtonRef.current?.focus()
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [onClose])
+
   return (
-    <aside className="evidence-drawer" aria-label={copy(language, 'evidence')}>
+    <aside className="evidence-drawer" role="dialog" aria-labelledby={`evidence-title-${caseItem.id}`}>
       <div className="drawer-header">
-        <div><span className="drawer-kicker">{copy(language, 'selectedCase')}</span><h2>{caseItem.title[language]}</h2></div>
-        <button type="button" className="icon-button" onClick={onClose} aria-label={copy(language, 'close')}><X size={18} /></button>
+        <div><span className="drawer-kicker">{copy(language, 'selectedCase')}</span><h2 id={`evidence-title-${caseItem.id}`}>{caseItem.title[language]}</h2></div>
+        <button ref={closeButtonRef} type="button" className="icon-button" onClick={onClose} aria-label={copy(language, 'close')}><X size={18} /></button>
       </div>
       <div className="drawer-case-line"><code>{caseItem.id}</code><span className={`evidence-badge evidence-badge-${caseItem.evidenceStatus}`}>{caseItem.evidenceStatus === 'verified' && <CheckCircle2 size={12} />} {EVIDENCE_STATUS_META[caseItem.evidenceStatus][language]}</span></div>
 
@@ -60,9 +82,9 @@ export function EvidenceDrawer({ caseItem, language, onClose }: EvidenceDrawerPr
 
       {latestEvent && <section className="drawer-section drawer-latest"><h3>{copy(language, 'latestAction')}</h3><div className="latest-event-date">{formatDate(latestEvent.date, language)}</div><strong>{latestEvent.label[language]}</strong><p className="drawer-copy">{latestEvent.description[language]}</p></section>}
 
-      <section className={`gdpr-exclusion ${isEprivacyAllocationIncluded || isExcluded ? '' : 'is-review'}`}>
-        <strong>{isEprivacyAllocationIncluded && !isExcluded ? copy(language, 'whyIncludedEprivacy') : isExcluded ? copy(language, 'whyNotGdpr') : copy(language, 'notInEprivacy')}</strong>
-        <p>{caseItem.gdprExclusionReason?.[language] ?? (language === 'zh' ? '法律依据或金额归属仍需人工核验。' : 'The legal basis or fine allocation still needs manual verification.')}</p>
+      <section className={`gdpr-exclusion ${isEprivacyAllocationIncluded || isExcluded || isGdprOnly ? '' : 'is-review'}`}>
+        <strong>{isEprivacyAllocationIncluded && !isExcluded ? copy(language, 'whyIncludedEprivacy') : isExcluded ? copy(language, 'whyNotGdpr') : isGdprOnly ? copy(language, 'gdprOnlyRecord') : copy(language, 'notInEprivacy')}</strong>
+        <p>{isGdprOnly ? copy(language, 'gdprOnlyExplanation') : caseItem.gdprExclusionReason?.[language] ?? (language === 'zh' ? '法律依据或金额归属仍需人工核验。' : 'The legal basis or fine allocation still needs manual verification.')}</p>
       </section>
     </aside>
   )

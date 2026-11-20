@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { cases, DATA_AS_OF, legalBases, type EnforcementSurface, type EnforcementTopic } from './data/cases.ts'
 import { flattenTimeline, getDashboardMetrics, getSourceRegistry } from './data/dashboardMetrics.ts'
@@ -15,7 +15,13 @@ import { DEFAULT_FILTERS, getStoredLanguage, type ViewKey } from './lib/appState
 import { copy } from './lib/copy.ts'
 import { exportCaseCsv, exportCaseJson } from './lib/export.ts'
 import { filterCases, type CaseFilters, type SortDirection, type SortKey } from './lib/filterCases.ts'
+import { buildActiveFilterSummary, hasActiveFilters } from './lib/filterSummary.ts'
+import { buildLocalizedFilterOptions } from './lib/filterOptions.ts'
 import type { Language } from './lib/i18n.ts'
+import { EMPTY_SOURCE_STATUS, SOURCE_STATUS_FILENAME } from './data/sourceStatus.ts'
+import { readSourceStatusSnapshot, summarizeSourceStatus, type SourceStatusSnapshot } from './lib/sourceStatus.ts'
+import { ActiveFilterSummary } from './components/ActiveFilterSummary.tsx'
+import { isSearchShortcut } from './lib/keyboard.ts'
 
 export const APP_TITLE = 'ePrivacy｜独立执法 Tracker'
 
@@ -40,12 +46,20 @@ function App() {
   const [sortKey, setSortKey] = useState<SortKey>('lastVerified')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [sourceStatusSnapshot, setSourceStatusSnapshot] = useState<SourceStatusSnapshot | null>(EMPTY_SOURCE_STATUS)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const selectedTriggerRef = useRef<HTMLElement | null>(null)
   const filteredCases = useMemo(() => filterCases(cases, filters, language), [filters, language])
   const metrics = useMemo(() => getDashboardMetrics(filteredCases), [filteredCases])
   const timeline = useMemo(() => flattenTimeline(filteredCases), [filteredCases])
   const sourceRegistry = useMemo(() => getSourceRegistry(filteredCases), [filteredCases])
   const availableYears = useMemo(() => [...new Set(cases.map((item) => item.decisionDate.slice(0, 4)))].sort((left, right) => right.localeCompare(left)), [])
   const availableSurfaces = useMemo(() => [...new Set(cases.map((item) => item.surface))] as EnforcementSurface[], [])
+  const authorityOptions = useMemo(() => buildLocalizedFilterOptions(cases, 'authority'), [])
+  const countryOptions = useMemo(() => buildLocalizedFilterOptions(cases, 'country'), [])
+  const filterSummaryOptions = useMemo(() => ({ authorities: authorityOptions, countries: countryOptions, years: availableYears, surfaces: availableSurfaces, legalBases }), [authorityOptions, countryOptions, availableYears, availableSurfaces])
+  const activeFilterLabels = useMemo(() => buildActiveFilterSummary(filters, language, filterSummaryOptions), [filters, language, filterSummaryOptions])
+  const sourceStatus = useMemo(() => summarizeSourceStatus(sourceStatusSnapshot), [sourceStatusSnapshot])
   const selectedCase = filteredCases.find((item) => item.id === selectedId) ?? null
   const currentCopy = (key: Parameters<typeof copy>[1]) => copy(language, key)
 
@@ -53,6 +67,33 @@ function App() {
     window.localStorage.setItem('eprivacy-tracker-language', language)
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
   }, [language])
+
+  useEffect(() => {
+    let active = true
+    fetch(`${import.meta.env.BASE_URL}${SOURCE_STATUS_FILENAME}`)
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload: unknown) => {
+        if (active) setSourceStatusSnapshot(readSourceStatusSnapshot(payload))
+      })
+      .catch(() => {
+        if (active) setSourceStatusSnapshot(null)
+      })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if (!isSearchShortcut(event)) return
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || (event.target instanceof HTMLElement && event.target.isContentEditable)) return
+      event.preventDefault()
+      searchInputRef.current?.focus()
+      searchInputRef.current?.select()
+    }
+    document.addEventListener('keydown', handleShortcut)
+    return () => document.removeEventListener('keydown', handleShortcut)
+  }, [])
 
   useEffect(() => {
     if (filteredCases.length === 0) {
@@ -74,9 +115,15 @@ function App() {
     setFilters(DEFAULT_FILTERS)
   }
 
-  function handleSelect(id: string) {
+  function handleSelect(id: string, trigger: HTMLElement) {
     setSelectedId(id)
+    selectedTriggerRef.current = trigger
     setDrawerOpen(true)
+  }
+
+  function handleCloseDrawer() {
+    setDrawerOpen(false)
+    window.requestAnimationFrame(() => selectedTriggerRef.current?.focus())
   }
 
   function handleSort(nextKey: SortKey) {
@@ -109,7 +156,7 @@ function App() {
         <button className="mobile-nav-close" type="button" onClick={() => setMobileNavOpen(false)} aria-label={currentCopy('close')} aria-hidden={!mobileNavOpen} tabIndex={mobileNavOpen ? 0 : -1}><X size={18} /></button>
       </div>
       <div className="main-shell">
-        <TopBar query={filters.query} onQueryChange={(query) => setFilters((current) => ({ ...current, query }))} onExportJson={handleExportJson} onExportCsv={handleExportCsv} language={language} />
+        <TopBar searchInputRef={searchInputRef} query={filters.query} onQueryChange={(query) => setFilters((current) => ({ ...current, query }))} onExportJson={handleExportJson} onExportCsv={handleExportCsv} language={language} />
         <button className="mobile-nav-trigger" type="button" onClick={() => setMobileNavOpen(true)} aria-label={currentCopy('portal')} aria-expanded={mobileNavOpen} aria-controls="mobile-nav"><Menu size={20} /></button>
         <main className="main-content">
           <section className="page-heading">
@@ -117,11 +164,12 @@ function App() {
               <div className="page-eyebrow">{currentCopy('portal')} · {DATA_AS_OF}</div>
               <h1>{currentCopy('title')}</h1>
               <p>{currentCopy(view === 'overview' ? 'overviewSub' : view === 'cases' ? 'registerSub' : view === 'timeline' ? 'timelineSub' : 'sourcesSub')}</p>
+              <ActiveFilterSummary labels={activeFilterLabels} language={language} onClear={clearFilters} />
             </div>
             <LegalBasisCallout language={language} />
           </section>
 
-          {view === 'overview' && <Overview metrics={metrics} language={language} onViewChange={handleViewChange} />}
+          {view === 'overview' && <Overview metrics={metrics} language={language} onViewChange={handleViewChange} sourceStatus={sourceStatus} hasActiveFilters={hasActiveFilters(filters)} />}
 
           {view === 'cases' && (
             <section className="register-view">
@@ -133,8 +181,8 @@ function App() {
                   sortKey={sortKey}
                   sortDirection={sortDirection}
                   filters={filters}
-                  authorities={[...new Set(cases.map((item) => item.authority.en))]}
-                  countries={[...new Set(cases.map((item) => item.country.en))]}
+                  authorities={authorityOptions}
+                  countries={countryOptions}
                   years={availableYears}
                   surfaces={availableSurfaces}
                   legalBases={legalBases}
@@ -144,7 +192,7 @@ function App() {
                   onClearFilters={clearFilters}
                   language={language}
                 />
-                <EvidenceDrawer caseItem={drawerOpen ? selectedCase : null} language={language} onClose={() => setDrawerOpen(false)} />
+                <EvidenceDrawer caseItem={drawerOpen ? selectedCase : null} language={language} onClose={handleCloseDrawer} />
               </div>
               <div className="register-secondary-grid">
                 <Timeline events={timeline} language={language} compact onOpenAll={() => handleViewChange('timeline')} />

@@ -9,7 +9,7 @@ export interface LocalizedText {
 
 export type EnforcementTopic = 'cookies' | 'app_sdk' | 'device_identifiers' | 'e_marketing'
 export type CaseOutcome = 'fine' | 'injunction' | 'closed' | 'proceeding' | 'prosecution'
-export type GdprTreatment = 'excluded' | 'mixed_needs_review' | 'unknown'
+export type GdprTreatment = 'included' | 'excluded' | 'mixed_needs_review' | 'unknown'
 export type TrackerTreatment = 'included' | 'needs_review' | 'excluded'
 export type EvidenceStatus = 'verified' | 'needs_review' | 'excluded'
 export type EvidenceLevel = 'primary_decision' | 'authority_announcement' | 'authority_register' | 'annual_report'
@@ -33,6 +33,7 @@ export interface CaseSource {
   sourceType: SourceType
   evidenceLevel: EvidenceLevel
   verificationStatus: SourceVerificationStatus
+  /** Date the source evidence was last manually checked; automated reachability is tracked separately. */
   lastCheckedAt: string
 }
 
@@ -162,6 +163,8 @@ const AEPD_ANNUAL_2023_SOURCE = 'https://www.aepd.es/memorias/memoria-aepd-2023.
 const AEPD_COOKIES_GUIDANCE = 'https://www.aepd.es/guias/guia-cookies.pdf'
 const GARANTE_META_SOURCE = 'https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/10321080'
 const GARANTE_META_DECISION = 'https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/10321455'
+const GARANTE_FOODINHO_DECISION = 'https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/print/10074601'
+const GARANTE_FOODINHO_FOLLOW_UP = 'https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/10105535'
 
 export const legalBases: LegalBasis[] = [
   {
@@ -247,6 +250,13 @@ export const legalBases: LegalBasis[] = [
     family: 'eprivacy',
     jurisdiction: { zh: '意大利', en: 'Italy' },
     sourceUrl: GARANTE_META_DECISION,
+  },
+  {
+    id: 'it-gdpr-articles-5-6-9-12-13-22-25-28-32-88',
+    label: { zh: 'GDPR Articles 5、6、9、12、13、22、25、28、32、88（Foodinho）', en: 'GDPR Articles 5, 6, 9, 12, 13, 22, 25, 28, 32 and 88 (Foodinho)' },
+    family: 'gdpr',
+    jurisdiction: { zh: '意大利 / 欧盟', en: 'Italy / EU' },
+    sourceUrl: GARANTE_FOODINHO_DECISION,
   },
 ]
 
@@ -916,6 +926,41 @@ export const cases: EnforcementCase[] = [
     events: [
       caseEvent('2026-11-13', { zh: '作出 €805m 罚款决定', en: '€805m fine decision issued' }, { zh: 'Garante Privacy 依据 Article 122 对 Meta Platforms Ireland Limited 作出 €805m 罚款，并要求针对相册读取功能取得独立、具体同意。', en: 'The Garante imposed an €805m fine on Meta Platforms Ireland Limited under Article 122 and required separate, specific consent for the gallery-access feature.' }, GARANTE_META_DECISION),
       caseEvent('2026-11-14', { zh: '官方公告发布', en: 'Official announcement published' }, { zh: 'Garante 公告说明 Facebook Android App 读取照片、视频与元数据，且该功能在默认状态下启用。', en: 'The Garante announcement describes the Facebook Android app’s access to photos, videos and metadata, with the feature enabled by default.' }, GARANTE_META_SOURCE),
+    ],
+    lastVerifiedAt: DATA_AS_OF,
+  },
+  {
+    id: 'EP-2024-006',
+    title: { zh: 'Foodinho / Glovo｜App SDK 设备与定位数据（GDPR-only）', en: 'Foodinho / Glovo | app SDK device and location data (GDPR-only)' },
+    authority: { zh: 'Garante Privacy', en: 'Garante Privacy' },
+    country: { zh: '意大利', en: 'Italy' },
+    entity: { zh: 'Foodinho s.r.l.（Glovo）', en: 'Foodinho s.r.l. (Glovo)' },
+    topics: ['app_sdk', 'device_identifiers'],
+    surface: 'mobile_app',
+    legalBases: [basis('it-gdpr-articles-5-6-9-12-13-22-25-28-32-88')],
+    outcome: 'fine',
+    enforcementRoute: 'administrative_fine',
+    status: { zh: 'GDPR 罚款 · SDK/API 整改要求', en: 'GDPR fine · SDK/API remediation requirements' },
+    fineEur: null,
+    totalDecisionAmountEur: 5_000_000,
+    amountAllocation: 'not_applicable',
+    fineScopeNote: { zh: '官方 €5m 罚款依据 GDPR 与意大利数据保护规则，不是 ePrivacy 转化规则，因此不计入本 Tracker 的 ePrivacy 总额。', en: 'The official €5m fine relies on GDPR and Italian data-protection provisions, not an ePrivacy-transposition rule, so it is excluded from this tracker’s ePrivacy total.' },
+    decisionReference: 'Provvedimento 675 · 13 November 2024',
+    decisionDate: '2024-11-13',
+    latestDate: '2024-12-19',
+    summary: { zh: 'Garante 记录了 App 通过 SDK/API 向第三方传输骑手 ID、设备信息、操作系统和定位数据，并作出 GDPR 罚款与整改要求。', en: 'The Garante recorded the app’s transfer of rider IDs, device information, operating-system data and location through SDKs/APIs, and imposed a GDPR fine with remediation requirements.' },
+    evidenceNote: { zh: '这是明确提及 SDK 读取设备与定位信息的官方决定，但法律依据是 GDPR，不应被当作 ePrivacy 处罚金额。它作为 App SDK 参考案件显示在登记库中，但明确排除出 ePrivacy 总额。', en: 'This official decision explicitly mentions SDK access to device and location information, but its legal basis is GDPR rather than ePrivacy. It is shown as an App SDK reference record and explicitly excluded from the ePrivacy total.' },
+    evidenceStatus: 'verified',
+    evidenceLevel: 'primary_decision',
+    trackerTreatment: 'excluded',
+    gdprTreatment: 'included',
+    sources: [
+      officialDecision('Garante Foodinho / Glovo Provvedimento 675', GARANTE_FOODINHO_DECISION),
+      officialSource({ zh: 'Garante Foodinho 后续整改期限决定', en: 'Garante Foodinho remediation-deadline decision' }, GARANTE_FOODINHO_FOLLOW_UP, 'follow_up', 'authority_announcement'),
+    ],
+    events: [
+      caseEvent('2024-11-13', { zh: '作出 €5m GDPR 罚款决定', en: '€5m GDPR fine decision issued' }, { zh: 'Garante 对 Foodinho s.r.l. 作出 €5m 行政罚款，并要求整改 SDK/API 传输、定位与数据治理。', en: 'The Garante imposed a €5m administrative fine on Foodinho s.r.l. and required remediation of SDK/API transfers, location handling and data governance.' }, GARANTE_FOODINHO_DECISION),
+      caseEvent('2024-12-19', { zh: '延长整改期限', en: 'Remediation deadline extended' }, { zh: 'Garante 对部分整改要求的期限作出延期处理。', en: 'The Garante granted an extension for selected remediation requirements.' }, GARANTE_FOODINHO_FOLLOW_UP),
     ],
     lastVerifiedAt: DATA_AS_OF,
   },

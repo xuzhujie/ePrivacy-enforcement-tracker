@@ -34,6 +34,14 @@ test('includes official coverage beyond the two seed cases', () => {
   assert.equal(vodafone.outcome, 'fine')
 })
 
+test('keeps GDPR-only SDK reference coverage outside the ePrivacy count', () => {
+  const foodinho = cases.find((item) => item.id === 'EP-2024-006')
+  assert.ok(foodinho)
+  assert.equal(foodinho.gdprTreatment, 'included')
+  assert.equal(foodinho.trackerTreatment, 'excluded')
+  assert.equal(getDashboardMetrics(cases).eprivacyCaseCount, 17)
+})
+
 test('keeps mixed legal-basis decisions in the evidence review queue', () => {
   const solocal = cases.find((item) => item.id === 'EP-2025-003')
   assert.ok(solocal)

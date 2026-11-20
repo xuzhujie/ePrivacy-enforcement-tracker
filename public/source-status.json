@@ -1,0 +1,189 @@
+{
+  "checkedAt": "2026-11-20T14:47:59.189Z",
+  "totalCount": 30,
+  "okCount": 19,
+  "attentionCount": 11,
+  "blockingCount": 0,
+  "results": [
+    {
+      "url": "https://cnil.fr/en/closure-injunction-issued-against-orange",
+      "statusCode": 403,
+      "finalUrl": "https://cnil.fr/en/closure-injunction-issued-against-orange",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://cnil.fr/en/data-brokers-caloga-fined-eu80000",
+      "statusCode": 200,
+      "finalUrl": "https://cnil.fr/en/data-brokers-caloga-fined-eu80000",
+      "status": "ok"
+    },
+    {
+      "url": "https://dataprotection.ie/en/news-media/latest-news/data-protection-commission-welcomes-outcome-prosecution-marketing-offences-1",
+      "statusCode": 200,
+      "finalUrl": "https://dataprotection.ie/en/news-media/latest-news/data-protection-commission-welcomes-outcome-prosecution-marketing-offences-1",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.aepd.es/memorias/memoria-aepd-2023.pdf",
+      "statusCode": 200,
+      "finalUrl": "https://www.aepd.es/memorias/memoria-aepd-2023.pdf",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/advertisements-inserted-among-emails-orange-fined-eu50-million",
+      "statusCode": 403,
+      "finalUrl": "https://www.cnil.fr/en/advertisements-inserted-among-emails-orange-fined-eu50-million",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.cnil.fr/en/closure-injunction-google",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/closure-injunction-google",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/cookie-regulation-cnil-continuing-action-plan-initiated-2019-and-has-imposed-two-fines-shein-and",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/cookie-regulation-cnil-continuing-action-plan-initiated-2019-and-has-imposed-two-fines-shein-and",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/cookies-american-express-fined-eu15-million-cnil",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/cookies-american-express-fined-eu15-million-cnil",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/cookies-and-advertisements-inserted-between-emails-google-fined-325-million-euros-cnil",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/cookies-and-advertisements-inserted-between-emails-google-fined-325-million-euros-cnil",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/cookies-placed-without-consent-company-publishes-website-vanityfairfr-fined-750000-euros",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/cookies-placed-without-consent-company-publishes-website-vanityfairfr-fined-750000-euros",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/cookies-placed-without-consent-shein-fined-150-million-euros-cnil",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/cookies-placed-without-consent-shein-fined-150-million-euros-cnil",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/data-brokers-solocal-marketing-services-fined-eu900000",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/data-brokers-solocal-marketing-services-fined-eu900000",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/en/online-clairvoyance-cosmospace-and-telemaque-fined-eu250000-and-eu150000",
+      "statusCode": 403,
+      "finalUrl": "https://www.cnil.fr/en/online-clairvoyance-cosmospace-and-telemaque-fined-eu250000-and-eu150000",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.cnil.fr/en/sanction-app-cookies-fnac",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/en/sanction-app-cookies-fnac",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.conseil-etat.fr/site/Pages-internationales/english/news/advertising-cookies-google-fined-100-million",
+      "statusCode": 200,
+      "finalUrl": "https://www.conseil-etat.fr/site/Pages-internationales/english/news/advertising-cookies-google-fined-100-million",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.dataprotection.ie/en/dpc-guidance/case-studies/electronic-direct-marketing/prosecution-supermacs-ireland-limited",
+      "statusCode": 200,
+      "finalUrl": "https://www.dataprotection.ie/en/dpc-guidance/case-studies/electronic-direct-marketing/prosecution-supermacs-ireland-limited",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.dataprotection.ie/en/dpc-guidance/case-studies/electronic-direct-marketing/prosecution-therapie-clinic-trading-valterous-limited",
+      "statusCode": 200,
+      "finalUrl": "https://www.dataprotection.ie/en/dpc-guidance/case-studies/electronic-direct-marketing/prosecution-therapie-clinic-trading-valterous-limited",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.dataprotection.ie/sites/default/files/uploads/2024-08/DPC-EN-AR-2023-Final-AC.pdf",
+      "statusCode": 200,
+      "finalUrl": "https://www.dataprotection.ie/sites/default/files/uploads/2024-08/DPC-EN-AR-2023-Final-AC.pdf",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/10321080",
+      "statusCode": 200,
+      "finalUrl": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/10321080",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/10105535",
+      "statusCode": 200,
+      "finalUrl": "https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/10105535",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/10321455",
+      "statusCode": 200,
+      "finalUrl": "https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/10321455",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/print/10074601",
+      "statusCode": 200,
+      "finalUrl": "https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/print/10074601",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000042635706",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000042635706",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000042635729",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000042635729",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000044840062",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000044840062",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000044840532",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000044840532",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000050324625",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000050324625",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000050324681",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000050324681",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051630617",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051630617",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051660380",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051660380",
+      "status": "needs_review"
+    }
+  ]
+}

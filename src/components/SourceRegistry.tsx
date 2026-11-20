@@ -45,7 +45,7 @@ export function SourceRegistry({ entries, language, compact = false, onOpenAll }
               <div className="source-registry-main">
                 <div className="source-registry-title-row">
                   <h3>{entry.label[language]}</h3>
-                  <span className={`verified-mark ${entry.verificationStatus === 'needs_review' ? 'is-review' : ''}`}>{entry.verificationStatus === 'verified' ? <CheckCircle2 size={13} /> : <AlertCircle size={13} />} {copy(language, entry.verificationStatus === 'verified' ? 'verified' : 'attention')}</span>
+                  <span className={`verified-mark ${entry.verificationStatus === 'needs_review' ? 'is-review' : ''}`}>{entry.verificationStatus === 'verified' ? <CheckCircle2 size={13} /> : <AlertCircle size={13} />} {copy(language, entry.verificationStatus === 'verified' ? 'sourceEvidenceVerified' : 'sourceEvidenceReview')}</span>
                 </div>
                 <div className="source-type-row">
                   {entry.sourceTypes.map((sourceType) => {

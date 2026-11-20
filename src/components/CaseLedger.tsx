@@ -6,6 +6,7 @@ import { copy } from '../lib/copy.ts'
 import { sortCases, type CaseFilters, type SortDirection, type SortKey } from '../lib/filterCases.ts'
 import { FilterRow } from './FilterRow.tsx'
 import type { LegalBasis } from '../data/cases.ts'
+import type { LocalizedFilterOption } from '../lib/filterOptions.ts'
 
 interface CaseLedgerProps {
   items: EnforcementCase[]
@@ -13,12 +14,12 @@ interface CaseLedgerProps {
   sortKey: SortKey
   sortDirection: SortDirection
   filters: CaseFilters
-  authorities: string[]
-  countries: string[]
+  authorities: LocalizedFilterOption[]
+  countries: LocalizedFilterOption[]
   years: string[]
   surfaces: EnforcementSurface[]
   legalBases: LegalBasis[]
-  onSelect: (id: string) => void
+  onSelect: (id: string, trigger: HTMLElement) => void
   onSort: (key: SortKey) => void
   onFiltersChange: (patch: Partial<CaseFilters>) => void
   onClearFilters: () => void
@@ -68,15 +69,16 @@ export function CaseLedger({ items, selectedId, sortKey, sortDirection, filters,
                 <tr
                   className={selectedId === item.id ? 'is-selected' : ''}
                   key={item.id}
-                  onClick={() => onSelect(item.id)}
+                  onClick={(event) => onSelect(item.id, event.currentTarget)}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {
                       event.preventDefault()
-                      onSelect(item.id)
+                      onSelect(item.id, event.currentTarget)
                     }
                   }}
                   tabIndex={0}
                   aria-selected={selectedId === item.id}
+                  aria-label={`${item.id} ${item.title[language]}`}
                 >
                   <td className="case-id-cell" data-label={copy(language, 'caseId')}><ChevronRight size={15} className={selectedId === item.id ? 'chevron-open' : ''} /><code>{item.id}</code></td>
                   <td data-label={copy(language, 'authority')}><strong>{item.authority[language]}</strong><small>{item.country[language]}</small></td>

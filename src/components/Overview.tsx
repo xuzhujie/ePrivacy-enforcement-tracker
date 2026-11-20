@@ -5,16 +5,19 @@ import type { Language } from '../lib/i18n.ts'
 import { formatDate, formatFine } from '../lib/i18n.ts'
 import { copy } from '../lib/copy.ts'
 import type { ViewKey } from '../lib/appState.ts'
+import type { SourceStatusSummary } from '../lib/sourceStatus.ts'
 
 interface OverviewProps {
   metrics: DashboardMetrics
   language: Language
   onViewChange: (view: ViewKey) => void
+  sourceStatus: SourceStatusSummary
+  hasActiveFilters: boolean
 }
 
 const TOPICS: EnforcementTopic[] = ['cookies', 'app_sdk', 'device_identifiers', 'e_marketing']
 
-export function Overview({ metrics, language, onViewChange }: OverviewProps) {
+export function Overview({ metrics, language, onViewChange, sourceStatus, hasActiveFilters }: OverviewProps) {
   return (
     <section className="overview-view">
       <div className="metrics-grid">
@@ -43,7 +46,7 @@ export function Overview({ metrics, language, onViewChange }: OverviewProps) {
       <div className="overview-columns">
         <section className="overview-panel">
           <div className="panel-heading">
-            <div><h2>{copy(language, 'topicCoverage')}</h2><p>{copy(language, 'overviewSub')}</p></div>
+            <div><h2>{copy(language, 'topicCoverage')}</h2><p>{copy(language, 'topicCountsScope')}</p></div>
             <button className="text-link" type="button" onClick={() => onViewChange('cases')}>{copy(language, 'cases')} <ArrowRight size={15} /></button>
           </div>
           <div className="topic-coverage-list">
@@ -52,7 +55,7 @@ export function Overview({ metrics, language, onViewChange }: OverviewProps) {
                 <div className="coverage-label"><span className={`topic-dot topic-dot-${topic}`} />{TOPIC_META[topic].label[language]}</div>
                 <div className="coverage-track"><span style={{ width: `${metrics.eprivacyCaseCount ? Math.max(5, (metrics.topicCounts[topic] / metrics.eprivacyCaseCount) * 100) : 0}%` }} /></div>
                 <strong>{metrics.topicCounts[topic]}</strong>
-                {metrics.topicCounts[topic] === 0 && <small>{copy(language, 'readyForBackfill')}</small>}
+                {metrics.topicCounts[topic] === 0 && <small>{copy(language, 'noIncludedTopicRecords')}</small>}
               </div>
             ))}
           </div>
@@ -95,8 +98,18 @@ export function Overview({ metrics, language, onViewChange }: OverviewProps) {
           </div>
           <div className="freshness-summary">
             <strong>{formatDate(DATA_AS_OF, language)}</strong>
-            <span>{metrics.sourceCount} {copy(language, 'verifiedSources')}</span>
+            <span>{metrics.sourceCount} {copy(language, 'registeredSources')}</span>
           </div>
+          <div className={`source-status-summary source-status-summary-${sourceStatus.label}`}>
+            <span>{copy(language, 'sourceReachability')}</span>
+            {sourceStatus.checkedAt ? (
+              <strong>{sourceStatus.okCount}/{sourceStatus.totalCount} {copy(language, 'sourceReachable')} · {formatDate(sourceStatus.checkedAt.slice(0, 10), language)}</strong>
+            ) : (
+              <strong>{copy(language, 'sourceStatusUnavailable')}</strong>
+            )}
+          </div>
+          {sourceStatus.attentionCount > 0 && <p className="source-status-note">{sourceStatus.attentionCount} {copy(language, 'sourceNeedsReview')}</p>}
+          {hasActiveFilters && <p className="data-quality-note">{copy(language, 'filterScopeNote')}</p>}
         </section>
       </div>
     </section>

@@ -20,7 +20,9 @@ test('aggregates only explicitly excluded ePrivacy cases', () => {
   assert.equal(metrics.topicCounts.e_marketing, 8)
   assert.equal(metrics.topicCounts.app_sdk, 0)
   assert.equal(metrics.topicCounts.device_identifiers, 3)
+  assert.equal(metrics.allTopicCounts.app_sdk, 1)
   assert.ok(metrics.sourceCount >= 28)
+  assert.deepEqual(metrics.sourceEvidenceStatusCounts, { verified: 29, needs_review: 1 })
 })
 
 test('deduplicates official source URLs while retaining case coverage', () => {

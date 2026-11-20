@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   check-official-sources:
@@ -18,8 +18,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Check official source URLs
         id: source_check
         continue-on-error: true
@@ -30,6 +31,24 @@ jobs:
         with:
           name: source-status
           path: source-status.json
+      - name: Prepare Pages source status snapshot
+        if: always()
+        run: |
+          if [ -f source-status.json ]; then
+            cp source-status.json public/source-status.json
+          fi
+      - name: Publish source status snapshot
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/source-status.json
+          if git diff --cached --quiet; then
+            echo "Source status snapshot unchanged"
+          else
+            git commit -m "chore: refresh source status snapshot"
+            git push
+          fi
       - name: Fail when a source is unreachable
         if: steps.source_check.outcome == 'failure'
         run: exit 1

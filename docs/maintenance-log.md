@@ -6,9 +6,12 @@
 - 按 Légifrance 决定拆分 COSMOSPACE / TELEMAQUE 的 ePrivacy 罚款份额；SOLOCAL / CALOGA 仍因金额未拆分留在复核队列。
 - 新增意大利 Garante Privacy 对 Meta 的 €805m Article 122 终端相册访问处罚，补充移动 App / 设备信息覆盖。
 - 新增 `amountAllocation`、来源官方域名校验、CSV 字段和来源巡检脚本。
-- 将 4 个已失效的 CNIL PDF 地址切换为对应的 Légifrance 决定页；首次 live source check 共 28 个来源，17 个可达、11 个被官方站点以 403 保护、0 个确认失效。
+- 将 4 个已失效的 CNIL PDF 地址切换为对应的 Légifrance 决定页；当前 live source check 共 30 个来源，19 个可达、11 个被官方站点以 403 保护、0 个确认失效。
 - 首次 GitHub Actions 运行暴露 Node 22 不支持 `--test tests` 目录导入，已改为显式 `tests/*.test.ts`，避免本地 Node 26 与 CI 行为分叉。
-- App SDK 仍不做推测性标注；待官方决定明确指明 SDK 后再新增该主题案件。
+- 新增 Garante Foodinho / Glovo 的官方 GDPR-only SDK 参考记录；它显示在 App SDK 主题中，但明确排除在 ePrivacy 计数和金额之外。
+- 上线后优化：将人工证据核验与自动 URL 可达性分离；当前快照为 30 个来源、19 个可达、11 个 403 待复核、0 个确认失效。
+- 补充跨视图筛选摘要、`⌘ / Ctrl K` 搜索快捷键、证据抽屉 Escape/焦点返回和中英文机构/国家筛选显示。
+- CI 改用 `package-lock.json` 与 `npm ci`，来源巡检会更新 `public/source-status.json` 并保留 Actions artifact。
 
 ## 维护规则
 
