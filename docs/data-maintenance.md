@@ -37,7 +37,7 @@
 
 `.github/workflows/quality-and-pages.yml` 在 Pull Request 和 `main` 分支 push 时执行数据质量检查、测试、lint 和构建；`main` 通过质量门后，会把 `dist` 发布到 GitHub Pages。部署前会生成当前 `public/source-status.json`，但来源可达性告警不会改变案件证据或金额归属。仓库需要在 GitHub 的 Pages 设置中选择 GitHub Actions 作为来源，并为工作流保留 Pages 写入权限。
 
-GitHub Actions 工作流也支持定期来源检查：`source-monitor.yml` 每周检查登记库里的官方 URL，并在手动触发时生成来源状态报告和 Pages 快照。来源失效只会触发维护告警，不会自动把案件升级为已核验；新增或无法拆分的案件仍必须显式进入 `needs_review` 队列。HTTP 403 记录为可达性待复核，不作为确认失效。
+GitHub Actions 工作流也支持定期来源检查：`source-monitor.yml` 每周检查登记库里的官方 URL，并在手动触发时生成来源状态报告和 Pages 快照。来源失效只会触发维护告警，不会自动把案件升级为已核验；新增或无法拆分的案件仍必须显式进入 `needs_review` 队列。HTTP 403 记录为可达性待复核，不作为确认失效。2026-11-20 的专项审计确认，当前 11 个 403 URL 均仍对应已人工核验的官方 CNIL / Légifrance 证据；没有找到可安全替换的同决定稳定 URL，详见 [`docs/source-audit-2026-11-20.md`](source-audit-2026-11-20.md)。
 
 ## 建议维护节奏
 
@@ -50,3 +50,5 @@ GitHub Actions 工作流也支持定期来源检查：`source-monitor.yml` 每�
 ## 当前覆盖与已知空白
 
 当前数据覆盖 Cookie、电子营销、终端标识符和移动 App 相关记录。意大利 Garante 的 Meta 案件补充了“App 读取终端相册信息”的 ePrivacy 执法，但官方决定没有称其为 SDK，因此仍只标记 `device_identifiers`。另有一条 Garante Foodinho / Glovo 决定明确描述 SDK 读取设备信息、位置和标识符，但其法律依据是 GDPR；它可作为 App SDK 参考展示，`trackerTreatment = excluded`，不计入 ePrivacy 总额。新增 ePrivacy App SDK 案件时，仍需要官方文本明确说明 SDK、设备信息或终端标识符的读取行为，并确认实际法律依据属于 ePrivacy。
+
+本轮官方检索没有发现同时满足“明确 SDK 事实”和“明确 ePrivacy 法律依据”的新增处罚。CNIL 的移动应用建议属于合规指引，不作为执法案件纳入；后续仍按上述双重条件回填。
