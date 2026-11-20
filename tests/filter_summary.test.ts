@@ -25,6 +25,7 @@ test('builds localized active-filter labels while keeping stable filter values',
     legalBasisId: 'fr-article-82',
     outcome: 'fine',
     evidenceStatus: 'needs_review',
+    reviewQueue: 'needs_review',
   }
 
   const zh = buildActiveFilterSummary(filters, 'zh', options)
@@ -37,6 +38,8 @@ test('builds localized active-filter labels while keeping stable filter values',
   assert.ok(en.some((label) => label.includes(SURFACE_META.mobile_app.en)))
   assert.ok(zh.some((label) => label.includes('法国')))
   assert.ok(en.some((label) => label.includes('France')))
+  assert.ok(zh.some((label) => label.includes('待复核案件')))
+  assert.ok(en.some((label) => label.includes('Review queue')))
 })
 
 test('returns no active labels for the default filter state', () => {

@@ -14,6 +14,7 @@ const baseFilters: CaseFilters = {
   legalBasisId: 'all',
   outcome: 'all',
   evidenceStatus: 'all',
+  reviewQueue: 'all',
 }
 
 test('filters the register by topic and legal basis', () => {
@@ -48,6 +49,14 @@ test('filters by authority, country, and outcome', () => {
     'EP-2025-004',
     'EP-2025-005',
     'EP-2025-006',
+  ])
+})
+
+test('filters the independent review queue across evidence and tracker treatment', () => {
+  assert.deepEqual(filterCases(cases, { ...baseFilters, reviewQueue: 'needs_review' }).map((item) => item.id), [
+    'EP-2023-001',
+    'EP-2025-003',
+    'EP-2025-004',
   ])
 })
 

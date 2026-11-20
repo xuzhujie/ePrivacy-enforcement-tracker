@@ -10,6 +10,8 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-19-eprivacy-enforcement-tracker-design.md`
 
+> Historical status: all nine implementation tasks below were completed and superseded by the current data-review and release ledgers. The remaining open work is operational: official-source reachability review and future evidence backfill.
+
 ## Global Constraints
 
 - Default UI language is Chinese; English is switchable and persisted in `localStorage` under `eprivacy-tracker-language`.
@@ -51,11 +53,11 @@
 - Produces the `npm run dev`, `npm run build`, `npm run test`, and `npm run lint` commands used by later tasks.
 - Produces CSS variables for `--navy`, `--ink`, `--muted`, `--line`, `--surface`, `--blue`, `--amber`, `--teal`, spacing, radii, and drawer shadow.
 
-- [ ] **Step 1: Implement the scaffold**
+- [x] **Step 1: Implement the scaffold**
 
 Create a minimal Vite React entry point, install `react`, `react-dom`, `lucide-react`, and the TypeScript/Vite test dependencies, and define the shared CSS tokens and typography reset. Keep `App` as a placeholder composition root until later tasks replace it.
 
-- [ ] **Step 2: Verify the scaffold**
+- [x] **Step 2: Verify the scaffold**
 
 Run: `npm run build && npm run lint && npm test`
 
@@ -73,7 +75,7 @@ Expected: all three commands pass.
 - Produces `type EnforcementTopic`, `type CaseOutcome`, `type GdprTreatment`, `interface LegalBasis`, `interface EnforcementCase`, `legalBases`, `cases`, `TOPIC_META`, and `OUTCOME_META` for later tasks.
 - `cases` contains exactly two initial records: `EP-2025-001` Google and `EP-2025-002` SHEIN.
 
-- [ ] **Step 1: Write failing data-shape tests**
+- [x] **Step 1: Write failing data-shape tests**
 
 Add tests asserting:
 
@@ -90,17 +92,17 @@ assert.equal(shein.legalBases[0].id, 'fr-article-82')
 
 Also assert that Google has one combined fine scope note and no per-basis fine allocation.
 
-- [ ] **Step 2: Run the focused test to verify it fails**
+- [x] **Step 2: Run the focused test to verify it fails**
 
 Run: `npx tsx --test tests/cases.test.ts`
 
 Expected: FAIL because `src/data/cases.ts` and the seeded records do not exist yet.
 
-- [ ] **Step 3: Implement `src/data/cases.ts`**
+- [x] **Step 3: Implement `src/data/cases.ts`**
 
 Add the canonical legal-basis registry for Article 82 of the French Data Protection Act and Article L.34-5 of the French Postal and Electronic Communications Code. Add official CNIL source URLs, the 1 September 2025 Google and SHEIN decision events, Google’s 23 September 2026 injunction-closure event, bilingual summaries/evidence notes, `lastCheckedAt` values, and explicit GDPR-exclusion explanations. Preserve the combined Google amount.
 
-- [ ] **Step 4: Run the focused test to verify it passes**
+- [x] **Step 4: Run the focused test to verify it passes**
 
 Run: `npx tsx --test tests/cases.test.ts`
 
@@ -123,7 +125,7 @@ Expected: PASS with two official records and the exact legal-basis/topic asserti
 - `getSourceRegistry(items: EnforcementCase[]): SourceRegistryEntry[]`
 - `DashboardMetrics` includes `eprivacyFineTotal`, `eprivacyCaseCount`, `reviewCaseCount`, `topicCounts`, `legalBasisCounts`, `outcomeCounts`, `finesByYear`, `attention`, and `timeline`.
 
-- [ ] **Step 1: Write failing metric and filter tests**
+- [x] **Step 1: Write failing metric and filter tests**
 
 Assert:
 
@@ -139,17 +141,17 @@ assert.equal(metrics.topicCounts.device_identifiers, 0)
 
 Add a synthetic mixed record and assert its fine is not included. Assert filtering by topic, legal-basis ID, authority, and a case-insensitive search over case ID, entity, topic, and legal-basis labels. Assert source registry dedupes by URL and retains both case IDs in coverage. Assert timeline sorts Google’s 2026 closure before its 2025 fine and the SHEIN decision.
 
-- [ ] **Step 2: Run focused tests to verify they fail**
+- [x] **Step 2: Run focused tests to verify they fail**
 
 Run: `npx tsx --test tests/dashboard_metrics.test.ts tests/filter_cases.test.ts`
 
 Expected: FAIL because the metric/filter modules do not exist.
 
-- [ ] **Step 3: Implement the pure helpers**
+- [x] **Step 3: Implement the pure helpers**
 
 Use stable enums and legal-basis families for all aggregation decisions. Keep `gdprTreatment === 'excluded'` as the inclusion gate; use sets for topic counts; flatten events without mutating source arrays; dedupe source URLs while merging case coverage and source types. Define empty-topic results as zero counts and preserve a stable topic order for the UI.
 
-- [ ] **Step 4: Run focused tests to verify they pass**
+- [x] **Step 4: Run focused tests to verify they pass**
 
 Run: `npx tsx --test tests/dashboard_metrics.test.ts tests/filter_cases.test.ts`
 
@@ -172,21 +174,21 @@ Expected: PASS, including the mixed/unknown exclusion and combined-Google-fine t
 - `exportCaseJson(items: EnforcementCase[], filters: CaseFilters): string`
 - `exportCaseCsv(items: EnforcementCase[], language: Language): string`
 
-- [ ] **Step 1: Write failing formatting/export tests**
+- [x] **Step 1: Write failing formatting/export tests**
 
 Assert that formatting produces `€475m`/`€475 million`-style readable output, dates remain stable ISO values in exports, JSON contains `legalBases`, `gdprTreatment`, `gdprExclusionReason`, `events`, and `sources`, and CSV includes canonical `case_id`, `legal_basis_ids`, `gdpr_treatment`, `fine_eur`, `source_urls`, plus both language labels. Assert exports are structurally identical when called with `zh` versus `en` except for the explicit localized label columns.
 
-- [ ] **Step 2: Run the focused test to verify it fails**
+- [x] **Step 2: Run the focused test to verify it fails**
 
 Run: `npx tsx --test tests/export.test.ts`
 
 Expected: FAIL because the formatting/export helpers do not exist.
 
-- [ ] **Step 3: Implement the helpers**
+- [x] **Step 3: Implement the helpers**
 
 Keep export keys canonical and language-agnostic. JSON should include the active filter state and the complete case/source/event objects. CSV should flatten repeated topics, legal-basis IDs, event dates/labels, and source URLs with pipe-separated values and escape quotes/newlines safely.
 
-- [ ] **Step 4: Run the focused test to verify it passes**
+- [x] **Step 4: Run the focused test to verify it passes**
 
 Run: `npx tsx --test tests/export.test.ts`
 
@@ -211,15 +213,15 @@ Expected: PASS with both languages.
 - `TopicTabs` receives `{ topic, counts, onTopicChange, language }`.
 - `Overview` receives `{ metrics, language, onViewChange }`.
 
-- [ ] **Step 1: Implement the shell composition**
+- [x] **Step 1: Implement the shell composition**
 
 Replace the placeholder app with local state for view, language, search query, topic, filters, selected case, drawer visibility, and sort. Persist language only. Start on `cases` with Google selected, matching the design and the family resemblance to the DMA/DSA dashboards.
 
-- [ ] **Step 2: Implement the shared layout**
+- [x] **Step 2: Implement the shared layout**
 
 Create the dark rail, quiet top bar, title band, legal-basis callout, four topic tabs, and overview metrics. Use code-native Chinese copy, with English alternatives in the same copy map. Use Lucide icons for navigation, search, language, export, and the legal-basis marker.
 
-- [ ] **Step 3: Verify the shell before the case register**
+- [x] **Step 3: Verify the shell before the case register**
 
 Run: `npm run build`
 
@@ -241,19 +243,19 @@ Expected: PASS, with the shell rendering at `/` and the view buttons updating lo
 - `EvidenceDrawer` receives `caseItem: EnforcementCase | null`, language, and `onClose`.
 - `FilterRow` receives `CaseFilters`, option lists, language, and callbacks.
 
-- [ ] **Step 1: Implement the table-first ledger**
+- [x] **Step 1: Implement the table-first ledger**
 
 Render columns 案件 ID, 监管机构, 主体, 执法主题, 实际法律依据, 结果/状态, 罚款, 最后核验. Render legal bases as text with amber rules, not color-only badges. Preserve the combined Google fine. Add row hover, selected highlight, keyboard focus, disclosure affordance, and an intentional empty state for App SDK/device-identifier filters.
 
-- [ ] **Step 2: Implement filters and sorting**
+- [x] **Step 2: Implement filters and sorting**
 
 Wire search, topic tab, authority, country, legal-basis, outcome, and clear filters through `filterCases`. Sort by last verified, fine, authority, and legal basis; keep stable tie-breaking by case ID. Keep selected case valid when filters change, falling back to the first visible case or `null`.
 
-- [ ] **Step 3: Implement the evidence drawer**
+- [x] **Step 3: Implement the evidence drawer**
 
 Show title, case ID, verification mark, authority/entity/fine, every actual legal basis, source links, evidence note, latest action, and the highlighted “为什么不计入 GDPR” / English equivalent. For review cases, show “暂不计入 ePrivacy 总额” instead of asserting exclusion.
 
-- [ ] **Step 4: Verify the core path locally**
+- [x] **Step 4: Verify the core path locally**
 
 Run: `npm run build && npm test`
 
@@ -275,23 +277,23 @@ Expected: PASS. Manual check: select SHEIN, filter `电子营销` to get Google 
 - `SourceRegistry` receives `SourceRegistryEntry[]` and language.
 - App export callbacks call `exportCaseJson` / `exportCaseCsv` for the current filtered cases and trigger browser downloads.
 
-- [ ] **Step 1: Implement the overview view**
+- [x] **Step 1: Implement the overview view**
 
 Show ePrivacy-included total (€475m), included case count, review queue count, topic mix, and a small attention/source-freshness area. Do not show an empty or invented chart for App SDK/device identifiers; use zero-count labels and a short ready-for-backfill empty state.
 
-- [ ] **Step 2: Implement the timeline view**
+- [x] **Step 2: Implement the timeline view**
 
 Render flattened events newest-first with date, case, amount when relevant, topics, legal basis, description, and official source link. Use the same visual rhythm as the neighbouring trackers’ timeline sections while keeping ePrivacy legal-basis text visible.
 
-- [ ] **Step 3: Implement the source registry view**
+- [x] **Step 3: Implement the source registry view**
 
 Render deduped official URLs with source type, coverage case IDs/entities, last checked, verification status, and external links. Include the CNIL aggregate announcement and Google follow-up as standalone sources.
 
-- [ ] **Step 4: Wire JSON/CSV exports**
+- [x] **Step 4: Wire JSON/CSV exports**
 
 Add visible export controls to the top bar and verify the downloaded payload includes legal basis, GDPR treatment, exclusion/review reason, events, and source URLs.
 
-- [ ] **Step 5: Verify all views**
+- [x] **Step 5: Verify all views**
 
 Run: `npm run build && npm test`
 
@@ -310,15 +312,15 @@ Expected: PASS. Manual check: switch Overview → Case register → Timeline →
 - Desktop target: 1440×1024, with a narrow navy rail, ledger, and right evidence drawer.
 - Mobile target: 390×844, with collapsible rail, horizontally scrollable topic tabs, stacked ledger rows that keep legal-basis content visible, and drawer content below/over the selected row.
 
-- [ ] **Step 1: Implement responsive breakpoints**
+- [x] **Step 1: Implement responsive breakpoints**
 
 Use CSS grid/flex layout with a desktop drawer column and a mobile stacked drawer. Prevent horizontal page overflow; allow only intentional table/topic scrolling with accessible labels.
 
-- [ ] **Step 2: Implement interaction states**
+- [x] **Step 2: Implement interaction states**
 
 Add visible `:focus-visible`, hover, selected, disabled, empty, and reduced-motion states. Keep the legal-basis amber marker and verified-source teal mark meaningful in monochrome by pairing color with text/icons.
 
-- [ ] **Step 3: Run static verification**
+- [x] **Step 3: Run static verification**
 
 Run: `npm run lint && npm run build && npm test`
 
@@ -336,23 +338,23 @@ Expected: all commands pass with no unused imports, type errors, or lint violati
 - Uses the generated concept at `/Users/xuzhujie/.codex/generated_images/01a1f44f-5925-7543-a4db-bd243e420f10/exec-a368d1d0-a694-4589-87c0-d719bfde6c04.png` as the accepted visual reference.
 - Produces a latest implementation screenshot at 1440×1024 when practical and a mobile-sized screenshot.
 
-- [ ] **Step 1: Start the app and verify with Browser/IAB first**
+- [x] **Step 1: Start the app and verify with Browser/IAB first**
 
 Run: `npm run dev -- --host 127.0.0.1` and open the local URL in the Browser/IAB. Use Playwright Chromium only if Browser/IAB is unavailable or unreliable, recording that fallback reason.
 
-- [ ] **Step 2: Exercise the core workflow**
+- [x] **Step 2: Exercise the core workflow**
 
 Open the case register, select Google and SHEIN, switch topic tabs, filter App SDK/device identifiers, search `Article 82`, clear filters, switch language, export JSON/CSV, open official sources, and navigate all four views.
 
-- [ ] **Step 3: Check desktop and mobile screenshots**
+- [x] **Step 3: Check desktop and mobile screenshots**
 
 Inspect the first viewport, ledger, evidence drawer, timeline, source registry, and responsive collapse. Confirm the legal-basis field remains readable and there is no clipped primary content or accidental horizontal overflow.
 
-- [ ] **Step 4: Use `view_image` on the concept and latest implementation screenshot**
+- [x] **Step 4: Use `view_image` on the concept and latest implementation screenshot**
 
 Compare at least five concrete points: rail/navigation, title/legal-basis callout, table density and columns, amber/teal semantic accents, drawer geometry, typography/control sizing, timeline/source continuity, and mobile behavior.
 
-- [ ] **Step 5: Write the fidelity ledger and final verification**
+- [x] **Step 5: Write the fidelity ledger and final verification**
 
 Record each mismatch, concept evidence, render evidence, and fix/intentional deviation. Run the above-the-fold copy diff against the accepted copy list. Remove temporary screenshots/reports from the app workspace and leave only the durable fidelity ledger.
 

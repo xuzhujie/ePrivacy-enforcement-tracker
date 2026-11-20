@@ -16,6 +16,7 @@ const baseFilters: CaseFilters = {
   legalBasisId: 'all',
   outcome: 'all',
   evidenceStatus: 'all',
+      reviewQueue: 'all',
 }
 
 test('includes official coverage beyond the two seed cases', () => {
@@ -50,6 +51,8 @@ test('keeps mixed legal-basis decisions in the evidence review queue', () => {
   assert.equal(solocal.fineEur, null)
   assert.equal(solocal.totalDecisionAmountEur, 900_000)
   assert.equal(solocal.amountAllocation, 'unresolved')
+  assert.equal(solocal.latestDate, '2026-09-17')
+  assert.ok(solocal.events.some((event) => event.date === '2026-09-17'))
 
   const cosmospace = cases.find((item) => item.id === 'EP-2024-004')
   assert.ok(cosmospace)
@@ -68,6 +71,7 @@ test('keeps mixed legal-basis decisions in the evidence review queue', () => {
   assert.equal(metrics.eprivacyFineTotal, cases
     .filter((item) => item.trackerTreatment === 'included')
     .reduce((total, item) => total + (item.fineEur ?? 0), 0))
+  assert.equal(metrics.eprivacyFineTotal, 1_684_350_500)
   assert.ok(cases.filter((item) => item.trackerTreatment === 'needs_review').every((item) => item.reviewReason?.en))
 })
 

@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-11-20T14:47:59.189Z",
-  "totalCount": 30,
-  "okCount": 19,
-  "attentionCount": 11,
+  "checkedAt": "2026-11-20T15:25:57.375Z",
+  "totalCount": 32,
+  "okCount": 20,
+  "attentionCount": 12,
   "blockingCount": 0,
   "results": [
     {
@@ -87,6 +87,12 @@
       "url": "https://www.cnil.fr/en/sanction-app-cookies-fnac",
       "statusCode": 200,
       "finalUrl": "https://www.cnil.fr/en/sanction-app-cookies-fnac",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.cnil.fr/fr/cloture-injonction-solocal-marketing-services",
+      "statusCode": 200,
+      "finalUrl": "https://www.cnil.fr/fr/cloture-injonction-solocal-marketing-services",
       "status": "ok"
     },
     {
@@ -183,6 +189,12 @@
       "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051660380",
       "statusCode": 403,
       "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051660380",
+      "status": "needs_review"
+    },
+    {
+      "url": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000054886539",
+      "statusCode": 403,
+      "finalUrl": "https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000054886539",
       "status": "needs_review"
     }
   ]

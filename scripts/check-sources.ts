@@ -1,10 +1,11 @@
-import { writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import { cases } from '../src/data/cases.ts'
-import { buildSourceMonitorReport, classifySourceStatus, getSourceUrls, type SourceCheckResult } from '../src/lib/sourceMonitoring.ts'
+import { buildSourceMonitorReport, classifySourceStatus, getSourceUrls, parseSourceMonitorArgs, type SourceCheckResult } from '../src/lib/sourceMonitoring.ts'
+import { appendSourceStatusHistory, readSourceStatusHistory } from '../src/lib/sourceStatus.ts'
 
 const timeoutMs = 15_000
-const outputFlagIndex = process.argv.indexOf('--output')
-const outputPath = outputFlagIndex >= 0 ? process.argv[outputFlagIndex + 1] : null
+const { outputPath, historyPath } = parseSourceMonitorArgs(process.argv.slice(2))
 
 async function checkSource(url: string): Promise<SourceCheckResult> {
   try {
@@ -49,6 +50,18 @@ console.log(JSON.stringify(report, null, 2))
 
 if (outputPath) {
   await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8')
+}
+
+if (historyPath) {
+  let history = []
+  try {
+    history = readSourceStatusHistory(JSON.parse(await readFile(historyPath, 'utf8')))
+  } catch {
+    history = []
+  }
+  await mkdir(dirname(historyPath), { recursive: true })
+  const snapshots = appendSourceStatusHistory(history, report)
+  await writeFile(historyPath, `${JSON.stringify({ snapshots }, null, 2)}\n`, 'utf8')
 }
 
 if (report.blockingCount > 0) process.exitCode = 1

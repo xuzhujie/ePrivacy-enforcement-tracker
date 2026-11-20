@@ -5,19 +5,21 @@ import type { Language } from '../lib/i18n.ts'
 import { formatDate, formatFine } from '../lib/i18n.ts'
 import { copy } from '../lib/copy.ts'
 import type { ViewKey } from '../lib/appState.ts'
-import type { SourceStatusSummary } from '../lib/sourceStatus.ts'
+import type { SourceStatusHistorySummary, SourceStatusSummary } from '../lib/sourceStatus.ts'
 
 interface OverviewProps {
   metrics: DashboardMetrics
   language: Language
   onViewChange: (view: ViewKey) => void
   sourceStatus: SourceStatusSummary
+  sourceHistory: SourceStatusHistorySummary
   hasActiveFilters: boolean
+  onOpenReviewQueue: () => void
 }
 
 const TOPICS: EnforcementTopic[] = ['cookies', 'app_sdk', 'device_identifiers', 'e_marketing']
 
-export function Overview({ metrics, language, onViewChange, sourceStatus, hasActiveFilters }: OverviewProps) {
+export function Overview({ metrics, language, onViewChange, sourceStatus, sourceHistory, hasActiveFilters, onOpenReviewQueue }: OverviewProps) {
   return (
     <section className="overview-view">
       <div className="metrics-grid">
@@ -83,6 +85,7 @@ export function Overview({ metrics, language, onViewChange, sourceStatus, hasAct
             <strong>{metrics.reviewCaseCount}</strong>
             <span>{metrics.reviewCaseCount === 0 ? copy(language, 'noReview') : copy(language, 'attention')}</span>
           </div>
+          {metrics.reviewCaseCount > 0 && <button type="button" className="text-link" onClick={onOpenReviewQueue}>{copy(language, 'openReviewQueue')} <ArrowRight size={15} /></button>}
           <div className="evidence-status-grid" aria-label={copy(language, 'dataQuality')}>
             <div><span className="evidence-badge evidence-badge-verified">{EVIDENCE_STATUS_META.verified[language]}</span><strong>{metrics.evidenceStatusCounts.verified}</strong></div>
             <div><span className="evidence-badge evidence-badge-needs_review">{EVIDENCE_STATUS_META.needs_review[language]}</span><strong>{metrics.evidenceStatusCounts.needs_review}</strong></div>
@@ -109,6 +112,7 @@ export function Overview({ metrics, language, onViewChange, sourceStatus, hasAct
             )}
           </div>
           {sourceStatus.attentionCount > 0 && <p className="source-status-note">{sourceStatus.attentionCount} {copy(language, 'sourceNeedsReview')}</p>}
+          {sourceHistory.depth > 0 && <p className="source-history-note">{sourceHistory.depth} {copy(language, 'sourceHistorySnapshots')} · {formatDate(sourceHistory.latestCheckedAt?.slice(0, 10) ?? DATA_AS_OF, language)}</p>}
           {hasActiveFilters && <p className="data-quality-note">{copy(language, 'filterScopeNote')}</p>}
         </section>
       </div>

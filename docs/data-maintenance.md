@@ -22,7 +22,7 @@
 - `authority_register`：监管机构处罚登记；
 - `annual_report`：年度报告或汇总表，默认进入复核队列，直到找到直接决定文本。
 
-每个来源都要有官方 URL、`lastCheckedAt` 和 `verificationStatus`。这里的 `lastCheckedAt` 表示人工证据核验日期；自动 URL 可达性单独记录在 `public/source-status.json`，不会覆盖人工证据状态。当前数据校验接受 CNIL、Conseil d'État、爱尔兰 DPC、AEPD、Légifrance、意大利 Garante Privacy 和 EUR-Lex 等官方域名；新增机构时应同时更新 `src/data/dataQuality.ts` 的允许域名。
+每个来源都要有官方 URL、`lastCheckedAt` 和 `verificationStatus`。这里的 `lastCheckedAt` 表示人工证据核验日期；自动 URL 可达性单独记录在 `public/source-status.json`，最近 12 次去重快照记录在 `public/source-status-history.json`，不会覆盖人工证据状态。看板会在每条来源旁边分别显示人工证据与自动可达性。当前数据校验接受 CNIL、Conseil d'État、爱尔兰 DPC、AEPD、Légifrance、意大利 Garante Privacy 和 EUR-Lex 等官方域名；新增机构时应同时更新 `src/data/dataQuality.ts` 的允许域名。
 
 ## 更新流程
 
@@ -35,9 +35,9 @@
 
 ## 持续集成与发布
 
-`.github/workflows/quality-and-pages.yml` 在 Pull Request 和 `main` 分支 push 时执行数据质量检查、测试、lint 和构建；`main` 通过质量门后，会把 `dist` 发布到 GitHub Pages。部署前会生成当前 `public/source-status.json`，但来源可达性告警不会改变案件证据或金额归属。仓库需要在 GitHub 的 Pages 设置中选择 GitHub Actions 作为来源，并为工作流保留 Pages 写入权限。
+`.github/workflows/quality-and-pages.yml` 在 Pull Request 和 `main` 分支 push 时执行数据质量检查、测试、lint 和构建；`main` 通过质量门后，会把 `dist` 发布到 GitHub Pages。部署前会生成当前 `public/source-status.json` 及有界 `public/source-status-history.json`，但来源可达性告警不会改变案件证据或金额归属。仓库需要在 GitHub 的 Pages 设置中选择 GitHub Actions 作为来源，并为工作流保留 Pages 写入权限。
 
-GitHub Actions 工作流也支持定期来源检查：`source-monitor.yml` 每周检查登记库里的官方 URL，并在手动触发时生成来源状态报告和 Pages 快照。来源失效只会触发维护告警，不会自动把案件升级为已核验；新增或无法拆分的案件仍必须显式进入 `needs_review` 队列。HTTP 403 记录为可达性待复核，不作为确认失效。2026-11-20 的专项审计确认，当前 11 个 403 URL 均仍对应已人工核验的官方 CNIL / Légifrance 证据；没有找到可安全替换的同决定稳定 URL，详见 [`docs/source-audit-2026-11-20.md`](source-audit-2026-11-20.md)。
+GitHub Actions 工作流也支持定期来源检查：`source-monitor.yml` 每周检查登记库里的官方 URL，并在手动触发时生成来源状态报告和 Pages 快照。来源失效只会触发维护告警，不会自动把案件升级为已核验；新增或无法拆分的案件仍必须显式进入 `needs_review` 队列。HTTP 403 记录为可达性待复核，不作为确认失效。2026-11-20 的专项审计确认，当前 12 个 403 URL 均仍对应已人工核验的官方 CNIL / Légifrance 证据；没有找到可安全替换的同决定稳定 URL，详见 [`docs/source-audit-2026-11-20.md`](source-audit-2026-11-20.md)。
 
 ## 建议维护节奏
 

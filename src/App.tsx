@@ -11,15 +11,15 @@ import { CaseLedger } from './components/CaseLedger.tsx'
 import { EvidenceDrawer } from './components/EvidenceDrawer.tsx'
 import { Timeline } from './components/Timeline.tsx'
 import { SourceRegistry } from './components/SourceRegistry.tsx'
-import { DEFAULT_FILTERS, getStoredLanguage, type ViewKey } from './lib/appState.ts'
+import { DEFAULT_FILTERS, getStoredLanguage, parseFiltersFromSearch, serializeFiltersToSearch, type ViewKey } from './lib/appState.ts'
 import { copy } from './lib/copy.ts'
 import { exportCaseCsv, exportCaseJson } from './lib/export.ts'
 import { filterCases, type CaseFilters, type SortDirection, type SortKey } from './lib/filterCases.ts'
 import { buildActiveFilterSummary, hasActiveFilters } from './lib/filterSummary.ts'
 import { buildLocalizedFilterOptions } from './lib/filterOptions.ts'
 import type { Language } from './lib/i18n.ts'
-import { EMPTY_SOURCE_STATUS, SOURCE_STATUS_FILENAME } from './data/sourceStatus.ts'
-import { readSourceStatusSnapshot, summarizeSourceStatus, type SourceStatusSnapshot } from './lib/sourceStatus.ts'
+import { EMPTY_SOURCE_STATUS, SOURCE_STATUS_FILENAME, SOURCE_STATUS_HISTORY_FILENAME } from './data/sourceStatus.ts'
+import { readSourceStatusHistory, readSourceStatusSnapshot, summarizeSourceStatus, summarizeSourceStatusHistory, type SourceStatusHistorySummary, type SourceStatusSnapshot } from './lib/sourceStatus.ts'
 import { ActiveFilterSummary } from './components/ActiveFilterSummary.tsx'
 import { isSearchShortcut } from './lib/keyboard.ts'
 
@@ -40,13 +40,14 @@ function triggerDownload(filename: string, content: string, mimeType: string) {
 function App() {
   const [language, setLanguage] = useState<Language>(() => getStoredLanguage())
   const [view, setView] = useState<ViewKey>('cases')
-  const [filters, setFilters] = useState<CaseFilters>(DEFAULT_FILTERS)
+  const [filters, setFilters] = useState<CaseFilters>(() => typeof window === 'undefined' ? DEFAULT_FILTERS : parseFiltersFromSearch(window.location.search))
   const [selectedId, setSelectedId] = useState<string | null>(cases[0]?.id ?? null)
   const [drawerOpen, setDrawerOpen] = useState(true)
   const [sortKey, setSortKey] = useState<SortKey>('lastVerified')
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [sourceStatusSnapshot, setSourceStatusSnapshot] = useState<SourceStatusSnapshot | null>(EMPTY_SOURCE_STATUS)
+  const [sourceStatusHistory, setSourceStatusHistory] = useState<SourceStatusSnapshot[]>([])
   const searchInputRef = useRef<HTMLInputElement>(null)
   const selectedTriggerRef = useRef<HTMLElement | null>(null)
   const filteredCases = useMemo(() => filterCases(cases, filters, language), [filters, language])
@@ -60,6 +61,7 @@ function App() {
   const filterSummaryOptions = useMemo(() => ({ authorities: authorityOptions, countries: countryOptions, years: availableYears, surfaces: availableSurfaces, legalBases }), [authorityOptions, countryOptions, availableYears, availableSurfaces])
   const activeFilterLabels = useMemo(() => buildActiveFilterSummary(filters, language, filterSummaryOptions), [filters, language, filterSummaryOptions])
   const sourceStatus = useMemo(() => summarizeSourceStatus(sourceStatusSnapshot), [sourceStatusSnapshot])
+  const sourceHistory = useMemo<SourceStatusHistorySummary>(() => summarizeSourceStatusHistory(sourceStatusHistory), [sourceStatusHistory])
   const selectedCase = filteredCases.find((item) => item.id === selectedId) ?? null
   const currentCopy = (key: Parameters<typeof copy>[1]) => copy(language, key)
 
@@ -67,6 +69,14 @@ function App() {
     window.localStorage.setItem('eprivacy-tracker-language', language)
     document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
   }, [language])
+
+  useEffect(() => {
+    const search = serializeFiltersToSearch(filters)
+    const nextUrl = `${window.location.pathname}${search}${window.location.hash}`
+    if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextUrl) {
+      window.history.replaceState(null, '', nextUrl)
+    }
+  }, [filters])
 
   useEffect(() => {
     let active = true
@@ -77,6 +87,21 @@ function App() {
       })
       .catch(() => {
         if (active) setSourceStatusSnapshot(null)
+      })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  useEffect(() => {
+    let active = true
+    fetch(`${import.meta.env.BASE_URL}${SOURCE_STATUS_HISTORY_FILENAME}`)
+      .then((response) => response.ok ? response.json() : null)
+      .then((payload: unknown) => {
+        if (active) setSourceStatusHistory(readSourceStatusHistory(payload))
+      })
+      .catch(() => {
+        if (active) setSourceStatusHistory([])
       })
     return () => {
       active = false
@@ -113,6 +138,12 @@ function App() {
 
   function clearFilters() {
     setFilters(DEFAULT_FILTERS)
+  }
+
+  function openReviewQueue() {
+    setFilters({ ...DEFAULT_FILTERS, reviewQueue: 'needs_review' })
+    setView('cases')
+    setMobileNavOpen(false)
   }
 
   function handleSelect(id: string, trigger: HTMLElement) {
@@ -169,7 +200,7 @@ function App() {
             <LegalBasisCallout language={language} />
           </section>
 
-          {view === 'overview' && <Overview metrics={metrics} language={language} onViewChange={handleViewChange} sourceStatus={sourceStatus} hasActiveFilters={hasActiveFilters(filters)} />}
+          {view === 'overview' && <Overview metrics={metrics} language={language} onViewChange={handleViewChange} sourceStatus={sourceStatus} sourceHistory={sourceHistory} hasActiveFilters={hasActiveFilters(filters)} onOpenReviewQueue={openReviewQueue} />}
 
           {view === 'cases' && (
             <section className="register-view">
@@ -196,14 +227,14 @@ function App() {
               </div>
               <div className="register-secondary-grid">
                 <Timeline events={timeline} language={language} compact onOpenAll={() => handleViewChange('timeline')} />
-                <SourceRegistry entries={sourceRegistry} language={language} compact onOpenAll={() => handleViewChange('sources')} />
+                <SourceRegistry entries={sourceRegistry} language={language} sourceStatus={sourceStatusSnapshot} compact onOpenAll={() => handleViewChange('sources')} />
               </div>
             </section>
           )}
 
           {view === 'timeline' && <Timeline events={timeline} language={language} />}
 
-          {view === 'sources' && <SourceRegistry entries={sourceRegistry} language={language} />}
+          {view === 'sources' && <SourceRegistry entries={sourceRegistry} language={language} sourceStatus={sourceStatusSnapshot} />}
         </main>
         <footer className="app-footer">{currentCopy('notLegalAdvice')}</footer>
       </div>

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { buildSourceMonitorReport, classifySourceStatus } from '../src/lib/sourceMonitoring.ts'
+import { buildSourceMonitorReport, classifySourceStatus, parseSourceMonitorArgs } from '../src/lib/sourceMonitoring.ts'
 
 test('classifies source response statuses without treating access blocks as confirmed removal', () => {
   assert.equal(classifySourceStatus(200), 'ok')
@@ -21,4 +21,12 @@ test('summarizes source-monitor results for scheduled maintenance', () => {
   assert.equal(report.okCount, 1)
   assert.equal(report.attentionCount, 2)
   assert.equal(report.blockingCount, 1)
+})
+
+test('parses latest and history output paths for scheduled source checks', () => {
+  assert.deepEqual(parseSourceMonitorArgs(['--output', 'source-status.json', '--history-output', 'public/source-status-history.json']), {
+    outputPath: 'source-status.json',
+    historyPath: 'public/source-status-history.json',
+  })
+  assert.deepEqual(parseSourceMonitorArgs([]), { outputPath: null, historyPath: null })
 })

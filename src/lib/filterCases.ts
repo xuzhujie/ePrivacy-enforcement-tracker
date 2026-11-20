@@ -12,6 +12,7 @@ export interface CaseFilters {
   legalBasisId: FilterValue
   outcome: CaseOutcome | 'all'
   evidenceStatus: EvidenceStatus | 'all'
+  reviewQueue: 'all' | 'needs_review'
 }
 
 export type SortKey = 'lastVerified' | 'fine' | 'authority' | 'legalBasis'
@@ -59,8 +60,9 @@ export function filterCases(items: EnforcementCase[], filters: CaseFilters, lang
     const matchesLegalBasis = filters.legalBasisId === 'all' || item.legalBases.some((basis) => basis.id === filters.legalBasisId)
     const matchesOutcome = filters.outcome === 'all' || item.outcome === filters.outcome
     const matchesEvidenceStatus = filters.evidenceStatus === 'all' || item.evidenceStatus === filters.evidenceStatus
+    const matchesReviewQueue = filters.reviewQueue === 'all' || item.trackerTreatment === 'needs_review' || item.evidenceStatus === 'needs_review'
 
-    return matchesQuery && matchesTopic && matchesAuthority && matchesCountry && matchesYear && matchesSurface && matchesLegalBasis && matchesOutcome && matchesEvidenceStatus
+    return matchesQuery && matchesTopic && matchesAuthority && matchesCountry && matchesYear && matchesSurface && matchesLegalBasis && matchesOutcome && matchesEvidenceStatus && matchesReviewQueue
   })
 }
 

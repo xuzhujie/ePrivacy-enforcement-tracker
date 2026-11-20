@@ -58,7 +58,7 @@ jobs:
         run: npm ci
       - name: Refresh source reachability snapshot
         continue-on-error: true
-        run: npm run sources:check -- --output public/source-status.json
+        run: npm run sources:check -- --output public/source-status.json --history-output public/source-status-history.json
       - name: Build static site
         run: npm run build
       - name: Configure GitHub Pages

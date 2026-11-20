@@ -1,13 +1,15 @@
-import { AlertCircle, ArrowRight, CheckCircle2, ExternalLink, FileText } from 'lucide-react'
+import { AlertCircle, ArrowRight, CheckCircle2, CircleHelp, ExternalLink, FileText } from 'lucide-react'
 import type { SourceRegistryEntry } from '../data/dashboardMetrics.ts'
 import { EVIDENCE_LEVEL_META, type SourceType } from '../data/cases.ts'
 import type { Language } from '../lib/i18n.ts'
 import { formatDate } from '../lib/i18n.ts'
 import { copy } from '../lib/copy.ts'
+import { getSourceReachability, type SourceStatusSnapshot } from '../lib/sourceStatus.ts'
 
 interface SourceRegistryProps {
   entries: SourceRegistryEntry[]
   language: Language
+  sourceStatus: SourceStatusSnapshot | null
   compact?: boolean
   onOpenAll?: () => void
 }
@@ -18,7 +20,7 @@ const SOURCE_TYPE_META: Record<SourceType, { zh: string; en: string; className: 
   follow_up: { zh: '后续动作', en: 'Follow-up', className: 'source-type-follow-up' },
 }
 
-export function SourceRegistry({ entries, language, compact = false, onOpenAll }: SourceRegistryProps) {
+export function SourceRegistry({ entries, language, sourceStatus, compact = false, onOpenAll }: SourceRegistryProps) {
   const visibleEntries = compact ? entries.slice(0, 3) : entries
 
   return (
@@ -46,6 +48,12 @@ export function SourceRegistry({ entries, language, compact = false, onOpenAll }
                 <div className="source-registry-title-row">
                   <h3>{entry.label[language]}</h3>
                   <span className={`verified-mark ${entry.verificationStatus === 'needs_review' ? 'is-review' : ''}`}>{entry.verificationStatus === 'verified' ? <CheckCircle2 size={13} /> : <AlertCircle size={13} />} {copy(language, entry.verificationStatus === 'verified' ? 'sourceEvidenceVerified' : 'sourceEvidenceReview')}</span>
+                  {(() => {
+                    const reachability = getSourceReachability(sourceStatus, entry.url)
+                    const icon = reachability === 'ok' ? <CheckCircle2 size={12} /> : reachability === 'needs_review' ? <AlertCircle size={12} /> : <CircleHelp size={12} />
+                    const label = reachability === 'ok' ? 'sourceReachabilityOk' : reachability === 'needs_review' ? 'sourceReachabilityNeedsReview' : 'sourceReachabilityUnavailable'
+                    return <span className={`source-reachability source-reachability-${reachability}`}>{icon} {copy(language, label)}</span>
+                  })()}
                 </div>
                 <div className="source-type-row">
                   {entry.sourceTypes.map((sourceType) => {

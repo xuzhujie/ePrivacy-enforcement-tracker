@@ -35,5 +35,6 @@ export function buildActiveFilterSummary(filters: CaseFilters, language: Languag
   }
   if (filters.outcome !== 'all') labels.push(`${copy(language, 'outcome')}: ${OUTCOME_META[filters.outcome][language]}`)
   if (filters.evidenceStatus !== 'all') labels.push(`${copy(language, 'evidenceStatus')}: ${EVIDENCE_STATUS_META[filters.evidenceStatus][language]}`)
+  if (filters.reviewQueue !== 'all') labels.push(`${copy(language, 'reviewQueue')}: ${copy(language, 'reviewQueueNeedsReview')}`)
   return labels
 }

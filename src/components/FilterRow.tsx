@@ -73,6 +73,13 @@ export function FilterRow({ filters, authorities, countries, years, surfaces, le
           {EVIDENCE_STATUSES.map((status) => <option value={status} key={status}>{EVIDENCE_STATUS_META[status][language]}</option>)}
         </select>
       </label>
+      <label className="filter-select-wrap">
+        <span className="sr-only">{copy(language, 'reviewQueue')}</span>
+        <select value={filters.reviewQueue} onChange={(event) => onChange({ reviewQueue: event.target.value as CaseFilters['reviewQueue'] })}>
+          <option value="all">{copy(language, 'allReviewQueues')}</option>
+          <option value="needs_review">{copy(language, 'reviewQueueNeedsReview')}</option>
+        </select>
+      </label>
       <button type="button" className="clear-filters" onClick={onClear}><RotateCcw size={13} /> {copy(language, 'clearFilters')}</button>
     </div>
   )

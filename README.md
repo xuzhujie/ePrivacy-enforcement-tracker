@@ -28,12 +28,14 @@ npm run build
 官方来源巡检：
 
 ```bash
-npm run sources:check -- --output source-status.json
+npm run sources:check -- --output public/source-status.json --history-output public/source-status-history.json
 ```
 
 来源巡检只报告 URL 可达性，不会自动把复核案件升级为已核验；金额归属和法律依据仍需人工阅读官方原文。
 
 看板会把人工证据状态与自动 URL 可达性分开显示。`403` 只表示自动检查需要复核，不等于官方决定失效或案件证据被排除。
+`public/source-status-history.json` 保存最近 12 次去重后的巡检快照；部署后的来源登记会把最新自动结果显示在每条人工证据状态旁边。
+总览中的“待复核案件”入口会打开独立 review queue，当前筛选也会写入 URL（例如 `?review=needs_review`），便于分享和复核。
 
 ## 数据与维护
 
@@ -50,7 +52,7 @@ npm run sources:check -- --output source-status.json
 
 每次 Pull Request 和 `main` 分支 push 会执行数据校验、测试、lint 和构建；`main` 通过质量门后由 [`quality-and-pages.yml`](.github/workflows/quality-and-pages.yml) 发布 GitHub Pages。每周来源巡检由 [`source-monitor.yml`](.github/workflows/source-monitor.yml) 执行，并保留 JSON 报告为 Actions artifact。
 
-依赖安装使用已提交的 `package-lock.json` 与 `npm ci`。来源巡检会更新 `public/source-status.json`，下一次 Pages 发布会把最近巡检摘要带到看板中。
+依赖安装使用已提交的 `package-lock.json` 与 `npm ci`。来源巡检会更新 `public/source-status.json` 与有界历史文件，下一次 Pages 发布会把最近巡检摘要带到看板中。
 
 首次发布前，在仓库 Settings → Pages 中选择 **GitHub Actions** 作为来源。默认 Pages 地址为：
 

@@ -4,7 +4,7 @@
 
 **Goal:** Make the published ePrivacy Tracker precise about source freshness, transparent about active filters, accessible by keyboard, localized in its filters, reproducible in CI, and current in its QA documentation without changing legal-basis counting.
 
-**Architecture:** Keep the React/Vite static site and local TypeScript registry. Add a separate source-reachability snapshot consumed from `public/source-status.json`; retain manual evidence status in case data. Surface active filter context in the existing shell, strengthen focus semantics in the existing drawer/ledger, and update the existing workflows rather than introducing a backend.
+**Architecture:** Keep the React/Vite static site and local TypeScript registry. Add a separate source-reachability snapshot plus bounded history consumed from `public/source-status.json` and `public/source-status-history.json`; retain manual evidence status in case data. Surface active filter context and shareable review-queue URLs in the existing shell, strengthen focus semantics in the existing drawer/ledger, and update the existing workflows rather than introducing a backend.
 
 **Tech Stack:** React 19, TypeScript, Vite, Node test runner, ESLint, GitHub Actions, GitHub Pages.
 
@@ -145,7 +145,8 @@
 ## Progress ledger
 
 - 2026-11-20: Added the official Garante Foodinho / Glovo GDPR-only SDK reference without changing the ePrivacy total.
-- 2026-11-20: Final live source check: 30 URLs, 19 reachable, 11 HTTP 403 needs-review, 0 confirmed unreachable.
+- 2026-11-20: Final live source check: 32 URLs, 20 reachable, 12 HTTP 403 needs-review, 0 confirmed unreachable; the bounded history file contains 2 snapshots.
 - 2026-11-20: Local UI verification passed for active-filter scope, App SDK reference exclusion, source freshness, Meta/Ctrl+K, English labels, Escape close and focus return.
 - 2026-11-20: Clean `npm ci`, data check, 33 tests, lint and production build passed after regenerating a registry-based lockfile.
-- 2026-11-20: Published Pages verification passed for 21 cases, 30 deduplicated sources, 19/30 reachable snapshot status, and the Foodinho / Glovo GDPR-only SDK scope.
+- 2026-11-20: Added the official SOLOCAL SAN-2026-012 closure follow-up, independent review-queue filtering, URL-persisted filters, source-status history, and separate automated reachability badges.
+- 2026-11-20: Current data check reports 21 cases, 34 case-source records, 32 deduplicated sources, 17 included cases, €1,684,350,500 included, and 3 review cases.

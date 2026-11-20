@@ -152,6 +152,8 @@ const COSMOSPACE_DECISION = 'https://www.legifrance.gouv.fr/cnil/id/CNILTEXT0000
 const TELEMAQUE_DECISION = 'https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000050324681'
 const SOLOCAL_DECISION = 'https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051630617'
 const CALOGA_DECISION = 'https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000051660380'
+const SOLOCAL_CLOSURE_SOURCE = 'https://www.cnil.fr/fr/cloture-injonction-solocal-marketing-services'
+const SOLOCAL_CLOSURE_DECISION = 'https://www.legifrance.gouv.fr/cnil/id/CNILTEXT000054886539'
 const DPC_COOKIES_SOURCE = 'https://www.dataprotection.ie/en/dpc-guidance/guidance-cookies-and-other-tracking-technologies'
 const DPC_MARKETING_SOURCE = 'https://www.dataprotection.ie/en/faqs/direct-marketing/what-rules-apply-electronic-direct-marketing'
 const DPC_ANNUAL_2023_SOURCE = 'https://www.dataprotection.ie/sites/default/files/uploads/2024-08/DPC-EN-AR-2023-Final-AC.pdf'
@@ -722,7 +724,7 @@ export const cases: EnforcementCase[] = [
     fineScopeNote: { zh: 'SAN-2025-001 披露 €900,000 总罚款，依据为 CPCE Article L.34-5 与 GDPR Article 7，但决定未分配金额，暂不计入。', en: 'SAN-2025-001 discloses a €900,000 total fine under CPCE Article L.34-5 and GDPR Article 7, but does not allocate the amount, so it is not counted yet.' },
     decisionReference: 'SAN-2025-001',
     decisionDate: '2025-05-15',
-    latestDate: '2025-05-15',
+    latestDate: '2026-09-17',
     summary: { zh: 'SOLOCAL 使用数据经纪商和游戏/试用表单获取的潜客数据，为广告主开展 SMS 或邮件商业推销。', en: 'SOLOCAL used prospect data obtained through data brokers and contest/testing forms to run SMS or email prospecting for advertisers.' },
     evidenceNote: { zh: 'Légifrance 决定原文确认 CPCE Article L.34-5 与 GDPR Article 7，但只披露 €900,000 合计，未提供可核验的法律依据金额分配。', en: 'The Légifrance decision confirms CPCE Article L.34-5 and GDPR Article 7, but discloses only a combined €900,000 and no verifiable allocation by legal basis.' },
     evidenceStatus: 'verified',
@@ -734,8 +736,13 @@ export const cases: EnforcementCase[] = [
     sources: [
       officialDecision('CNIL SOLOCAL 官方公告', SOLOCAL_SOURCE, 'authority_announcement'),
       officialDecision('CNIL SAN-2025-001 决定', SOLOCAL_DECISION),
+      officialSource({ zh: 'CNIL SOLOCAL 结案公告', en: 'CNIL SOLOCAL injunction closure notice' }, SOLOCAL_CLOSURE_SOURCE, 'follow_up', 'authority_announcement'),
+      officialSource({ zh: 'CNIL SAN-2026-012 SOLOCAL 结案决定', en: 'CNIL SAN-2026-012 SOLOCAL closure decision' }, SOLOCAL_CLOSURE_DECISION, 'follow_up', 'primary_decision'),
     ],
-    events: [caseEvent('2025-05-15', { zh: 'CNIL 作出 €900,000 混合罚款', en: 'CNIL imposed a €900,000 mixed-basis fine' }, { zh: 'SAN-2025-001 对 SOLOCAL MARKETING SERVICES 作出 €900,000 罚款；CPCE 与 GDPR 金额未拆分。', en: 'SAN-2025-001 imposed a €900,000 fine on SOLOCAL MARKETING SERVICES; the CPCE and GDPR portions are not allocated.' }, SOLOCAL_DECISION)],
+    events: [
+      caseEvent('2025-05-15', { zh: 'CNIL 作出 €900,000 混合罚款', en: 'CNIL imposed a €900,000 mixed-basis fine' }, { zh: 'SAN-2025-001 对 SOLOCAL MARKETING SERVICES 作出 €900,000 罚款；CPCE 与 GDPR 金额未拆分。', en: 'SAN-2025-001 imposed a €900,000 fine on SOLOCAL MARKETING SERVICES; the CPCE and GDPR portions are not allocated.' }, SOLOCAL_DECISION),
+      caseEvent('2026-09-17', { zh: '结案 SOLOCAL 整改禁令', en: 'SOLOCAL injunction closed' }, { zh: 'CNIL SAN-2026-012 结案此前针对 SOLOCAL 的整改禁令；这项后续动作不改变原 €900,000 混合依据罚款的分配状态。', en: 'CNIL SAN-2026-012 closed the earlier SOLOCAL injunction; this follow-up does not change the allocation status of the original €900,000 mixed-basis fine.' }, SOLOCAL_CLOSURE_DECISION),
+    ],
     lastVerifiedAt: DATA_AS_OF,
   },
   {

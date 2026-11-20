@@ -19,6 +19,24 @@ export interface SourceMonitorReport {
   results: SourceCheckResult[]
 }
 
+export interface SourceMonitorOutputPaths {
+  outputPath: string | null
+  historyPath: string | null
+}
+
+export function parseSourceMonitorArgs(args: readonly string[]): SourceMonitorOutputPaths {
+  const getFlagValue = (flag: string): string | null => {
+    const index = args.indexOf(flag)
+    const value = index >= 0 ? args[index + 1] : null
+    return value && !value.startsWith('--') ? value : null
+  }
+
+  return {
+    outputPath: getFlagValue('--output'),
+    historyPath: getFlagValue('--history-output'),
+  }
+}
+
 export function classifySourceStatus(statusCode: number | null): SourceCheckStatus {
   if (statusCode != null && statusCode >= 200 && statusCode < 400) return 'ok'
   if (statusCode != null && statusCode >= 400 && statusCode < 404) return 'needs_review'

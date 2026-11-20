@@ -24,25 +24,30 @@ jobs:
       - name: Check official source URLs
         id: source_check
         continue-on-error: true
-        run: npm run sources:check -- --output source-status.json
+        run: npm run sources:check -- --output source-status.json --history-output source-status-history.json
       - name: Upload source status report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: source-status
-          path: source-status.json
+          path: |
+            source-status.json
+            source-status-history.json
       - name: Prepare Pages source status snapshot
         if: always()
         run: |
           if [ -f source-status.json ]; then
             cp source-status.json public/source-status.json
           fi
+          if [ -f source-status-history.json ]; then
+            cp source-status-history.json public/source-status-history.json
+          fi
       - name: Publish source status snapshot
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/source-status.json
+          git add public/source-status.json public/source-status-history.json
           if git diff --cached --quiet; then
             echo "Source status snapshot unchanged"
           else

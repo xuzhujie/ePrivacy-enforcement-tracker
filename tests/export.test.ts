@@ -15,6 +15,7 @@ const filters: CaseFilters = {
   legalBasisId: 'all',
   outcome: 'all',
   evidenceStatus: 'all',
+  reviewQueue: 'all',
 }
 
 test('formats fines and dates for both supported languages', () => {

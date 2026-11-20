@@ -6,6 +6,8 @@
 
 **Architecture:** Treat official source discovery as a read-only evidence pass, then update the local TypeScript case registry and its quality tests. Keep the existing GitHub Pages workflow unchanged unless a concrete repository constraint is found; a missing remote is a release blocker, not a reason to invent deployment state.
 
+> Historical status: the repository now has a configured `origin` and a live GitHub Pages deployment. This plan remains the evidence-review record; subsequent source-history, review-queue, and shareable-filter work is tracked in `2026-11-20-review-ops-and-shareable-filters.md`.
+
 **Tech Stack:** React + Vite, TypeScript, Node test runner, GitHub Actions, official regulator websites and decision PDFs.
 
 **Spec:** `docs/superpowers/specs/2026-11-19-eprivacy-enforcement-tracker-design.md`
@@ -17,7 +19,7 @@
 - Never split a multi-basis fine without an official allocation.
 - Preserve the distinction between `fineEur` and `totalDecisionAmountEur`.
 - Do not label a mobile-app record as App SDK unless the official text explicitly identifies an SDK.
-- Do not push, publish, or change repository permissions without a configured remote and explicit user-owned destination.
+- Do not push, publish, or change repository permissions without a configured remote and an explicit user-owned destination; the current repository uses `origin` and the user has authorized continuation in this checkout.
 
 ## Review Focus
 
@@ -25,7 +27,7 @@
 - Mixed GDPR/ePrivacy allocation: unresolved amount stays outside the total and retains a review reason.
 - Annual-report summaries: they remain review items until a direct decision is found.
 - Source freshness and official-host validation: every changed record must pass `npm run data:check`.
-- Release readiness without a remote: report the blocker accurately and verify the local Pages workflow syntax and build path.
+- Release readiness: verify the configured `origin`, local Pages workflow syntax, build path, and the published Pages target; preserve the historical no-remote result as an archived baseline only.
 
 ### Task 1: Establish release and review baseline
 
@@ -35,7 +37,7 @@
 
 - [x] **Step 1: Check repository state**
 
-Confirm whether Git metadata, a remote, and a deploy target exist. If not, record the exact blocker without attempting a push.
+Confirm whether Git metadata, a remote, and a deploy target exist. The historical baseline recorded the pre-publication check; the current repository has `origin` and a configured Pages target.
 
 - [x] **Step 2: Record the review queue**
 
@@ -98,6 +100,6 @@ Run `npm run build` and verify `dist/index.html` and hashed assets exist.
 
 Verify the workflow order is `data:check → test → lint → build`, with Pages deploy gated on a successful `main` push.
 
-- [x] **Step 3: Report the external blocker**
+- [x] **Step 3: Confirm the external release state**
 
-If no remote exists, state that connecting the repository and enabling Pages remains the only external action; do not simulate a deployment.
+The historical baseline had no remote. The current checkout uses `origin` and its GitHub Pages deployment is live; do not simulate a deployment when the remote or Pages state is unavailable.
