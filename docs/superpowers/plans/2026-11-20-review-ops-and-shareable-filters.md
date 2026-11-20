@@ -113,4 +113,4 @@
 - [x] **Step 1: Mark completed historical implementation steps as complete and preserve genuinely open data/reachability risks.**
 - [x] **Step 2: Add this plan's completion ledger and current numbers without rewriting historical claims.**
 - [x] **Step 3: Run `npm ci`, `npm run data:check`, `npm test`, `npm run lint`, and `npm run build`.**
-- [ ] **Step 4: Verify the working tree, push `main`, wait for GitHub Actions/Pages, and inspect the published review queue/source-history behavior.**
+- [x] **Step 4: Verify the working tree, push `main`, wait for GitHub Actions/Pages, and inspect the published review queue/source-history behavior.**
