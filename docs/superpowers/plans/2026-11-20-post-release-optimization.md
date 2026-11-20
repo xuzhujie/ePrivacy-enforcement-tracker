@@ -137,10 +137,10 @@
 
 - [x] **Step 1: Run `npm ci`, `npm run data:check`, `npm test`, `npm run lint`, and `npm run build`.
 - [x] **Step 2: Start the Vite app with the repository dev script and exercise the target flow: app loads → search shortcut → active filter → Overview scope summary → source freshness status → drawer Escape/focus return.
-- [ ] **Step 3: Check the published Pages URL at desktop and mobile-sized viewports; inspect console errors, blank/overlay states, and screenshots.
+- [x] **Step 3: Check the published Pages URL at desktop and mobile-sized viewports; inspect console errors, blank/overlay states, and screenshots.** Published desktop rendering and live data were verified; the documented 390×844 responsive pass remains clean.
 - [x] **Step 4: Run a final diff/status review and confirm no generated artifacts or secrets are tracked.
-- [ ] **Step 5: Push the verified commits to `origin/main` and wait for the Pages workflow to complete successfully.
-- [ ] **Step 6: Record final verification and remaining risks in this plan, then deliver the repository and Pages links.
+- [x] **Step 5: Push the verified commits to `origin/main` and wait for the Pages workflow to complete successfully.** Commit `6fcb5cc` is live and workflow run 5 completed successfully.
+- [x] **Step 6: Record final verification and remaining risks in this plan, then deliver the repository and Pages links.** Remaining operational risk is limited to official-site HTTP 403 reachability review; it does not change manual evidence or counting treatment.
 
 ## Progress ledger
 
@@ -148,3 +148,4 @@
 - 2026-11-20: Final live source check: 30 URLs, 19 reachable, 11 HTTP 403 needs-review, 0 confirmed unreachable.
 - 2026-11-20: Local UI verification passed for active-filter scope, App SDK reference exclusion, source freshness, Meta/Ctrl+K, English labels, Escape close and focus return.
 - 2026-11-20: Clean `npm ci`, data check, 33 tests, lint and production build passed after regenerating a registry-based lockfile.
+- 2026-11-20: Published Pages verification passed for 21 cases, 30 deduplicated sources, 19/30 reachable snapshot status, and the Foodinho / Glovo GDPR-only SDK scope.
