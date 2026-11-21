@@ -43,10 +43,10 @@ npm run sources:check -- --output public/source-status.json --history-output pub
 - 数据校验：[`src/data/dataQuality.ts`](src/data/dataQuality.ts)
 - 维护约定：[`docs/data-maintenance.md`](docs/data-maintenance.md)
 - 维护日志：[`docs/maintenance-log.md`](docs/maintenance-log.md)
-- 最近一次来源与 App SDK 覆盖审计：[`docs/source-audit-2026-11-20.md`](docs/source-audit-2026-11-20.md)
+- 最近一次来源与 App SDK 覆盖审计：[`docs/source-audit-2026-11-21.md`](docs/source-audit-2026-11-21.md)
 - 来源巡检：[`scripts/check-sources.ts`](scripts/check-sources.ts)
 
-当前数据截至 `2026-11-20`。App SDK 现在包含一条官方明确提及 SDK 的 GDPR-only 参考记录，但该记录不计入 ePrivacy 处罚总额；没有官方明确文字时，仍不把普通移动 App API 或终端访问推断为 SDK。
+当前数据截至 `2026-11-21`。Massimo Dutti 已补挂 AEPD 直接决定并移出复核队列；App SDK 仍包含一条官方明确提及 SDK 的 GDPR-only 参考记录，但该记录不计入 ePrivacy 处罚总额；没有官方明确文字时，仍不把普通移动 App API 或终端访问推断为 SDK。
 
 ## CI / GitHub Pages
 

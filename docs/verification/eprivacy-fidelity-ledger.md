@@ -43,10 +43,16 @@ Date: 2026-11-20
 - Overview now derives metrics from the current filtered case set; selecting the empty App SDK topic shows `€0`, `0 cases`, `0 actions`, and `0 sources`.
 - Timeline events now carry the source that matches the event type; the 2026-09-23 Google follow-up opens the CNIL injunction-closure source, while the 2025 fine event opens the enforcement announcement.
 - Evidence status is now consistent in the table, evidence drawer, timeline, and source registry; annual-report evidence is visibly marked as needing review.
-- Data quality is executable with `npm run data:check`; the current dataset reports 21 cases, 34 source records, 17 included cases, €1,684,350,500 included, 3 review cases, and zero errors/warnings.
+- At the 2026-11-20 release baseline, `npm run data:check` reported 21 cases, 34 source records, 17 included cases, €1,684,350,500 included, 3 review cases, and zero errors/warnings; the 2026-11-21 follow-up is recorded below.
 - At 390×844, the closed mobile rail has `aria-hidden="true"` and its six navigation/language controls use `tabIndex=-1`; the scrim and close button enter the Tab order only while the rail is open.
 - CSV remains visible beside JSON at the 390px breakpoint; page and ledger overflow remain false, and legal-basis cells remain present in the stacked rows.
 - The updated shell exposes active filter context, separates whole-register URL reachability from manual evidence verification, and supports `⌘ / Ctrl K` search focus plus Escape drawer close/focus return.
+
+## 2026-11-21 evidence follow-up
+
+- AEPD 的 [PS/00051/2023 直接决定](https://www.aepd.es/documento/ps-00051-2023.pdf) 已被下载并核验：决定确认 GRUPO MASSIMO DUTTI, S.A. 因 LSSI Article 22(2) 违法处以 €5,000；该案件现为 `primary_decision` / `verified` / `included`。
+- 当前数据质量结果更新为 21 个案件、35 条案件—来源记录、33 个去重来源、18 个纳入案件、€1,684,355,500 纳入总额、2 个复核案件，错误和警告均为 0。
+- 2026-11-21 联网来源快照为 33 个 URL、21 个可达、12 个 403 待复核、0 个确认失效；403 仍不覆盖人工证据状态。
 
 ## Intentional deviations and remaining risk
 

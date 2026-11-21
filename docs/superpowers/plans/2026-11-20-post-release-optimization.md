@@ -150,3 +150,4 @@
 - 2026-11-20: Clean `npm ci`, data check, 33 tests, lint and production build passed after regenerating a registry-based lockfile.
 - 2026-11-20: Added the official SOLOCAL SAN-2026-012 closure follow-up, independent review-queue filtering, URL-persisted filters, source-status history, and separate automated reachability badges.
 - 2026-11-20: Current data check reports 21 cases, 34 case-source records, 32 deduplicated sources, 17 included cases, €1,684,350,500 included, and 3 review cases.
+- 2026-11-21: Added the official AEPD PS/00051/2023 decision for Massimo Dutti; current data reports 21 cases, 35 case-source records, 33 deduplicated sources, 18 included cases, €1,684,355,500 included, and 2 review cases. The live source snapshot is 33 URLs: 21 reachable, 12 HTTP 403 needs-review, 0 confirmed unreachable.

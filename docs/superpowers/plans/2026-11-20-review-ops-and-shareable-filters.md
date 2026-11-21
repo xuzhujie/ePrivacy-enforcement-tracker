@@ -14,7 +14,7 @@
 
 - Only official authority pages, decision texts, registers, or annual reports may support case records.
 - Never split a multi-basis fine without an official allocation; SOLOCAL €900,000 and CALOGA €80,000 stay unresolved.
-- An annual-report record stays in the review queue until a direct official decision is safely attached; Massimo Dutti remains review if the AEPD PDF cannot be verified.
+- An annual-report record stays in the review queue until a direct official decision is safely attached; Massimo Dutti met that condition in the 2026-11-21 follow-up and is now closed from review.
 - HTTP 403 is an automated reachability review state, not evidence invalidation.
 - App SDK remains an ePrivacy topic only when the official enforcement text explicitly identifies SDK behavior and an ePrivacy legal basis.
 - Use tests first for every behavior change and run the full quality gate before release.
@@ -37,7 +37,7 @@
 
 **Interfaces:**
 - Add the official SOLOCAL 2026 injunction-closure follow-up source and event.
-- Keep Massimo Dutti in annual-report review because the direct AEPD decision is not verified in an official accessible source.
+- During the original 2026-11-20 pass, keep Massimo Dutti in annual-report review because the direct AEPD decision was not yet verified; the subsequent 2026-11-21 audit attaches the official decision and closes this item.
 - Keep SOLOCAL / CALOGA mixed amounts unresolved and out of the ePrivacy total.
 
 - [x] **Step 1: Write failing assertions** for the SOLOCAL closure source/event and unchanged total/allocation invariants.

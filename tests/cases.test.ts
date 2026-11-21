@@ -94,9 +94,12 @@ test('tracks the official SOLOCAL injunction closure without reallocating its mi
   assert.ok(solocal.events.some((event) => event.date === '2026-09-17' && event.sourceUrl?.includes('CNILTEXT000054886539')))
 })
 
-test('keeps Massimo Dutti in review when only the annual-report evidence is verified', () => {
+test('closes Massimo Dutti review with the official AEPD decision', () => {
   assert.ok(massimoDutti)
-  assert.equal(massimoDutti.evidenceLevel, 'annual_report')
-  assert.equal(massimoDutti.evidenceStatus, 'needs_review')
-  assert.equal(massimoDutti.trackerTreatment, 'needs_review')
+  assert.equal(massimoDutti.evidenceLevel, 'primary_decision')
+  assert.equal(massimoDutti.evidenceStatus, 'verified')
+  assert.equal(massimoDutti.trackerTreatment, 'included')
+  assert.equal(massimoDutti.gdprTreatment, 'excluded')
+  assert.equal(massimoDutti.fineEur, 5_000)
+  assert.ok(massimoDutti.sources.some((source) => source.url === 'https://www.aepd.es/documento/ps-00051-2023.pdf' && source.evidenceLevel === 'primary_decision'))
 })

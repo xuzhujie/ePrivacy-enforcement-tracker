@@ -1,7 +1,7 @@
 {
-  "checkedAt": "2026-11-20T15:25:57.375Z",
-  "totalCount": 32,
-  "okCount": 20,
+  "checkedAt": "2026-11-21T04:34:48.646Z",
+  "totalCount": 33,
+  "okCount": 21,
   "attentionCount": 12,
   "blockingCount": 0,
   "results": [
@@ -21,6 +21,12 @@
       "url": "https://dataprotection.ie/en/news-media/latest-news/data-protection-commission-welcomes-outcome-prosecution-marketing-offences-1",
       "statusCode": 200,
       "finalUrl": "https://dataprotection.ie/en/news-media/latest-news/data-protection-commission-welcomes-outcome-prosecution-marketing-offences-1",
+      "status": "ok"
+    },
+    {
+      "url": "https://www.aepd.es/documento/ps-00051-2023.pdf",
+      "statusCode": 200,
+      "finalUrl": "https://www.aepd.es/documento/ps-00051-2023.pdf",
       "status": "ok"
     },
     {

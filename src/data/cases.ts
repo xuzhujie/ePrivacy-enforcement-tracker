@@ -1,4 +1,4 @@
-export const DATA_AS_OF = '2026-11-20'
+export const DATA_AS_OF = '2026-11-21'
 
 export type Language = 'zh' | 'en'
 
@@ -162,6 +162,7 @@ const DPC_SUPERMACS_SOURCE = 'https://www.dataprotection.ie/en/dpc-guidance/case
 const DPC_THERAPIE_SOURCE = 'https://www.dataprotection.ie/en/dpc-guidance/case-studies/electronic-direct-marketing/prosecution-therapie-clinic-trading-valterous-limited'
 const DPC_BROWN_THOMAS_SOURCE = 'https://dataprotection.ie/en/news-media/latest-news/data-protection-commission-welcomes-outcome-prosecution-marketing-offences-1'
 const AEPD_ANNUAL_2023_SOURCE = 'https://www.aepd.es/memorias/memoria-aepd-2023.pdf'
+const AEPD_MASSIMO_DUTTI_DECISION = 'https://www.aepd.es/documento/ps-00051-2023.pdf'
 const AEPD_COOKIES_GUIDANCE = 'https://www.aepd.es/guias/guia-cookies.pdf'
 const GARANTE_META_SOURCE = 'https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/10321080'
 const GARANTE_META_DECISION = 'https://www.garanteprivacy.it/web/guest/home/docweb/-/docweb-display/docweb/10321455'
@@ -493,23 +494,26 @@ export const cases: EnforcementCase[] = [
     legalBases: [basis('es-lssi-article-22-2')],
     outcome: 'fine',
     enforcementRoute: 'administrative_fine',
-    status: { zh: '年度报告已披露 · 决定原文待补', en: 'Disclosed in annual report · decision text to be added' },
+    status: { zh: '已核验 · 已挂接直接决定', en: 'Verified · direct decision linked' },
     fineEur: 5_000,
     totalDecisionAmountEur: 5_000,
     amountAllocation: 'exact',
-    fineScopeNote: { zh: 'AEPD 年度报告披露的 €5,000 Cookie 罚款；当前来源为年度报告摘要，决定原文待补。', en: 'The AEPD annual report discloses a €5,000 cookie fine; the direct decision text is still to be added.' },
+    fineScopeNote: { zh: 'AEPD PS/00051/2023 直接决定确认 €5,000 罚款，依据为 LSSI Article 22(2)。', en: 'The AEPD PS/00051/2023 decision confirms a €5,000 fine under Article 22(2) of the LSSI.' },
     decisionReference: 'PS/00051/2023',
     decisionDate: '2023-12-31',
     latestDate: '2023-12-31',
     summary: { zh: 'AEPD 年度报告将该案列为 LSSI Article 22(2) Cookie 案件，涉及第一层信息不足与同意取得。', en: 'The AEPD annual report lists this as an LSSI Article 22(2) cookie case involving insufficient first-layer information and consent.' },
-    evidenceNote: { zh: '金额与法律依据来自 AEPD 2023 年度报告；因尚未挂接案件决定原文，证据状态为待复核。', en: 'The amount and legal basis come from the AEPD 2023 annual report; the case remains in review until the decision text is linked.' },
-    evidenceStatus: 'needs_review',
-    evidenceLevel: 'annual_report',
-    trackerTreatment: 'needs_review',
-    reviewReason: { zh: '需要补挂 AEPD PS/00051/2023 决定原文，并核对最终金额与日期。', en: 'Attach the AEPD PS/00051/2023 decision text and confirm the final amount and date.' },
-    gdprTreatment: 'unknown',
-    sources: [officialSource({ zh: 'AEPD 2023 年度报告', en: 'AEPD Annual Report 2023' }, AEPD_ANNUAL_2023_SOURCE, 'authority', 'annual_report', 'needs_review')],
-    events: [caseEvent('2023-12-31', { zh: 'AEPD 年度报告披露 €5,000', en: 'AEPD annual report disclosed €5,000' }, { zh: 'AEPD 年度报告将 Massimo Dutti 列为 LSSI Article 22(2) Cookie 案件。', en: 'The AEPD annual report lists Massimo Dutti as an LSSI Article 22(2) cookie case.' }, AEPD_ANNUAL_2023_SOURCE)],
+    evidenceNote: { zh: 'AEPD 直接决定确认：Massimo Dutti 因 Cookie 同意撤回后仍无法拒绝非必要第三方 Cookie，违反 LSSI Article 22(2)，处以 €5,000 罚款。', en: 'The direct AEPD decision confirms that Massimo Dutti could not reject non-essential third-party cookies after consent withdrawal, breaching LSSI Article 22(2) and resulting in a €5,000 fine.' },
+    evidenceStatus: 'verified',
+    evidenceLevel: 'primary_decision',
+    trackerTreatment: 'included',
+    gdprTreatment: 'excluded',
+    gdprExclusionReason: includedReason,
+    sources: [
+      officialSource({ zh: 'AEPD 2023 年度报告', en: 'AEPD Annual Report 2023' }, AEPD_ANNUAL_2023_SOURCE, 'authority', 'annual_report'),
+      officialDecision('AEPD PS/00051/2023 决定', AEPD_MASSIMO_DUTTI_DECISION),
+    ],
+    events: [caseEvent('2023-12-31', { zh: 'AEPD 直接决定确认 €5,000 罚款', en: 'AEPD direct decision confirmed €5,000 fine' }, { zh: 'AEPD PS/00051/2023 直接决定确认 Massimo Dutti 违反 LSSI Article 22(2)，并处以 €5,000 罚款。', en: 'The AEPD PS/00051/2023 decision confirmed a breach of LSSI Article 22(2) and imposed a €5,000 fine on Massimo Dutti.' }, AEPD_MASSIMO_DUTTI_DECISION)],
     lastVerifiedAt: DATA_AS_OF,
   },
   {

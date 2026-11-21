@@ -54,7 +54,6 @@ test('filters by authority, country, and outcome', () => {
 
 test('filters the independent review queue across evidence and tracker treatment', () => {
   assert.deepEqual(filterCases(cases, { ...baseFilters, reviewQueue: 'needs_review' }).map((item) => item.id), [
-    'EP-2023-001',
     'EP-2025-003',
     'EP-2025-004',
   ])

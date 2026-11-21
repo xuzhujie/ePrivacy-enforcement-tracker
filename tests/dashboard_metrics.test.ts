@@ -13,16 +13,16 @@ test('aggregates only explicitly excluded ePrivacy cases', () => {
   }
   const metrics = getDashboardMetrics([...cases, mixed])
 
-  assert.equal(metrics.eprivacyFineTotal, 1_684_350_500)
-  assert.equal(metrics.eprivacyCaseCount, 17)
-  assert.equal(metrics.reviewCaseCount, 4)
-  assert.equal(metrics.topicCounts.cookies, 9)
+  assert.equal(metrics.eprivacyFineTotal, 1_684_355_500)
+  assert.equal(metrics.eprivacyCaseCount, 18)
+  assert.equal(metrics.reviewCaseCount, 3)
+  assert.equal(metrics.topicCounts.cookies, 10)
   assert.equal(metrics.topicCounts.e_marketing, 8)
   assert.equal(metrics.topicCounts.app_sdk, 0)
   assert.equal(metrics.topicCounts.device_identifiers, 3)
   assert.equal(metrics.allTopicCounts.app_sdk, 1)
   assert.ok(metrics.sourceCount >= 28)
-  assert.deepEqual(metrics.sourceEvidenceStatusCounts, { verified: 31, needs_review: 1 })
+  assert.deepEqual(metrics.sourceEvidenceStatusCounts, { verified: 33, needs_review: 0 })
 })
 
 test('deduplicates official source URLs while retaining case coverage', () => {

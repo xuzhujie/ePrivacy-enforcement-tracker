@@ -40,7 +40,7 @@ test('keeps GDPR-only SDK reference coverage outside the ePrivacy count', () => 
   assert.ok(foodinho)
   assert.equal(foodinho.gdprTreatment, 'included')
   assert.equal(foodinho.trackerTreatment, 'excluded')
-  assert.equal(getDashboardMetrics(cases).eprivacyCaseCount, 17)
+  assert.equal(getDashboardMetrics(cases).eprivacyCaseCount, 18)
 })
 
 test('keeps mixed legal-basis decisions in the evidence review queue', () => {
@@ -67,20 +67,20 @@ test('keeps mixed legal-basis decisions in the evidence review queue', () => {
   assert.equal(caloga.totalDecisionAmountEur, 80_000)
 
   const metrics = getDashboardMetrics(cases)
-  assert.ok(metrics.reviewCaseCount >= 3)
+  assert.equal(metrics.reviewCaseCount, 2)
   assert.equal(metrics.eprivacyFineTotal, cases
     .filter((item) => item.trackerTreatment === 'included')
     .reduce((total, item) => total + (item.fineEur ?? 0), 0))
-  assert.equal(metrics.eprivacyFineTotal, 1_684_350_500)
+  assert.equal(metrics.eprivacyFineTotal, 1_684_355_500)
   assert.ok(cases.filter((item) => item.trackerTreatment === 'needs_review').every((item) => item.reviewReason?.en))
 })
 
 test('exposes evidence status as a filter and export field', () => {
-  const reviewCases = filterCases(cases, { ...baseFilters, evidenceStatus: 'needs_review' })
-  assert.ok(reviewCases.length >= 1)
-  assert.ok(reviewCases.every((item) => item.evidenceStatus === 'needs_review'))
+  const verifiedCases = filterCases(cases, { ...baseFilters, evidenceStatus: 'verified' })
+  assert.ok(verifiedCases.length >= 1)
+  assert.ok(verifiedCases.every((item) => item.evidenceStatus === 'verified'))
 
-  const csv = exportCaseCsv(reviewCases, 'zh')
+  const csv = exportCaseCsv(verifiedCases, 'zh')
   assert.match(csv, /evidence_status/)
   assert.match(csv, /tracker_treatment/)
   assert.match(csv, /total_decision_amount_eur/)

@@ -23,7 +23,7 @@ test('formats fines and dates for both supported languages', () => {
   assert.equal(formatFine(475_000_000, 'en'), '€475m')
   assert.equal(formatFine(1_500_000, 'en'), '€1.5m')
   assert.equal(formatFine(879_250_500, 'en'), '€879.25m')
-  assert.equal(formatFine(1_684_350_500, 'en'), '€1.68bn')
+  assert.equal(formatFine(1_684_355_500, 'en'), '€1.68bn')
   assert.equal(formatFine(null, 'zh'), '—')
   assert.match(formatDate('2025-09-01', 'zh'), /2025/)
   assert.match(formatDate('2025-09-01', 'en'), /2025/)

@@ -1,5 +1,12 @@
 # 维护日志
 
+## 2026-11-21
+
+- 通过联网巡检刷新 33 个官方来源：21 个返回 2xx、12 个 HTTP 403 待复核、0 个确认失效；来源历史保留 4 个有界快照。
+- 核验并补挂 [AEPD PS/00051/2023 直接决定](https://www.aepd.es/documento/ps-00051-2023.pdf)：Massimo Dutti 因 LSSI Article 22(2) 被处以 €5,000，证据级别升级为 `primary_decision`，从复核队列移出并纳入 ePrivacy 总额。
+- 本次数据结果为 21 个案件、35 条案件—来源记录、33 个去重来源、18 个纳入案件、€1,684,355,500 纳入总额、2 个复核案件；SOLOCAL €900,000 与 CALOGA €80,000 仍因混合依据未拆分而不计入。
+- 复核 App SDK / 终端信息官方执法覆盖：现有 FNAC Darty（Article 82）与 Meta（Article 122）保持精确主题边界；没有新增可安全标记为 `app_sdk` 且基于 ePrivacy 的处罚。
+
 ## 2026-11-20
 
 - 建立独立 ePrivacy 案件登记，保留 Cookie、电子营销、终端标识符和移动 App 主题。
