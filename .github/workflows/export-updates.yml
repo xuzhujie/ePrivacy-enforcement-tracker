@@ -1,0 +1,36 @@
+name: Export updates feed
+
+on:
+  schedule:
+    - cron: '37 5 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['src/data/**']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: export-updates-feed
+  cancel-in-progress: true
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+      - name: Export updates feed
+        run: npx tsx scripts/export-updates.ts
+      - name: Commit and push updates.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/updates.json
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: export updates feed"
+            git push
+          fi
