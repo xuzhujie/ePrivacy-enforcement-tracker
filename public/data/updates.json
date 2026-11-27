@@ -1,0 +1,54 @@
+{
+  "updated_at": "2026-11-21",
+  "source": "eprivacy-enforcement-tracker src/data/cases.ts",
+  "items": [
+    {
+      "title": "Meta / Facebook | app access to terminal photo gallery",
+      "link": "https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/10321080",
+      "date": "2026-11-14",
+      "summary": "The Garante found that the Facebook Android app accessed users’ photos, videos and metadata for gallery suggestions without specific, informed consent for that function. · ePrivacy 罚款 €805,000,000"
+    },
+    {
+      "title": "FNAC Darty | mobile-app terminal-identifier tracking",
+      "link": "https://www.cnil.fr/en/sanction-app-cookies-fnac",
+      "date": "2026-10-22",
+      "summary": "The CNIL found that the mobile app sent an FNAC-assigned identifier and browsing activity to a third-party domain for personalisation and recommendation-model training without consent. · ePrivacy 罚款 €"
+    },
+    {
+      "title": "Google | cookies and Gmail advertising emails",
+      "link": "https://www.cnil.fr/en/cookies-and-advertisements-inserted-between-emails-google-fined-325-million-euros-cnil",
+      "date": "2026-09-23",
+      "summary": "The CNIL found that Google displayed advertising between private Gmail messages without prior consent and obtained invalid consent for advertising cookies during account creation. · ePrivacy 罚款 €325,0"
+    },
+    {
+      "title": "SOLOCAL MARKETING SERVICES | data brokerage and electronic marketing",
+      "link": "https://www.cnil.fr/en/data-brokers-solocal-marketing-services-fined-eu900000",
+      "date": "2026-09-17",
+      "summary": "SOLOCAL used prospect data obtained through data brokers and contest/testing forms to run SMS or email prospecting for advertisers."
+    },
+    {
+      "title": "Brown Thomas | opt-out mechanism and marketing email",
+      "link": "https://dataprotection.ie/en/news-media/latest-news/data-protection-commission-welcomes-outcome-prosecution-marketing-offences-1",
+      "date": "2026-09-07",
+      "summary": "Brown Thomas pleaded guilty to five sample charges out of 21, involving missing opt-out addresses and continued marketing after consent withdrawal."
+    },
+    {
+      "title": "American Express | cookie withdrawal and refusal",
+      "link": "https://www.cnil.fr/en/cookies-american-express-fined-eu15-million-cnil",
+      "date": "2025-11-27",
+      "summary": "The CNIL found that American Express placed cookies before a choice, ignored refusal, and continued reading cookies after withdrawal. · ePrivacy 罚款 €1,500,000"
+    },
+    {
+      "title": "LES PUBLICATIONS CONDE NAST | Vanity Fair cookies",
+      "link": "https://www.cnil.fr/en/cookies-placed-without-consent-company-publishes-website-vanityfairfr-fined-750000-euros",
+      "date": "2025-11-20",
+      "summary": "The CNIL found that vanityfair.fr placed consent-based cookies before banner interaction and continued reading them after refusal or withdrawal. · ePrivacy 罚款 €750,000"
+    },
+    {
+      "title": "Orange | inbox advertising and cookie withdrawal",
+      "link": "https://www.cnil.fr/en/advertisements-inserted-among-emails-orange-fined-eu50-million",
+      "date": "2025-09-11",
+      "summary": "The CNIL found that Orange inserted advertising in inboxes without consent and continued reading cookies after users withdrew consent. · ePrivacy 罚款 €50,000,000"
+    }
+  ]
+}
